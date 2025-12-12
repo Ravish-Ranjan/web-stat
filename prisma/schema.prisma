@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String    @id @default(cuid())
+  name       String?
+  email      String    @unique
+  isVerified Boolean   @default(false)
+  avatar     String?
+  websites   Website[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted    Boolean   @default(false)
+  deletedOn  DateTime?
+
+  @@index([email])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Website {
+  id          String   @id @default(cuid())
+  url         String
+  name        String?
+  description String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checks      Check[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([url])
+}
+
+model Check {
+  id           String   @id @default(cuid())
+  websiteId    String
+  website      Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  status       Int      // HTTP status code (200, 404, 500, etc)
+  responseTime Int      // Response time in milliseconds
+  isUp         Boolean  // Quick boolean for up/down status
+  errorMessage String?  // Optional: store error details if check fails
+  checkedAt    DateTime @default(now())
+
+  @@index([websiteId, checkedAt])
+  @@index([checkedAt])
+}
