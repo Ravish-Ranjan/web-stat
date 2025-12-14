@@ -5,6 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { getServerSession } from "next-auth";
 import UserButton from "./UserButton";
 import {} from "next/navigation";
+import { ReactNode } from "react";
 
 interface TopbarProps {
 	hide?: {
@@ -16,9 +17,10 @@ interface TopbarProps {
 		rightSection?: boolean;
 		userbutton?: boolean;
 	};
+	children?: ReactNode;
 }
 
-async function Topbar({ hide }: TopbarProps) {
+async function Topbar({ hide, children }: TopbarProps) {
 	const session = await getServerSession();
 
 	let links: { label: string; path: string }[] = [
@@ -34,13 +36,13 @@ async function Topbar({ hide }: TopbarProps) {
 	if (!session) applyLinksAuthFilter();
 
 	return (
-		<div className="flex h-10 items-center justify-between p-2 gap-2">
+		<div className="flex h-12 items-center justify-between p-2 gap-2">
 			{!hide?.leftSection && (
-				<div className="flex gap-2 px-4">
+				<div className="flex gap-2 px-4 items-center">
 					{/* logo */}
 					{!hide?.logo && (
 						<Link href={"/"}>
-							<H4>Web Stat</H4>
+							<H4>WebStat</H4>
 						</Link>
 					)}
 					{/* links */}
@@ -63,8 +65,9 @@ async function Topbar({ hide }: TopbarProps) {
 					)}
 				</div>
 			)}
+			{children}
 			{!hide?.rightSection && (
-				<div className="flex gap-2">
+				<div className="flex gap-2 items-center">
 					{/* Login/Register Button */}
 					{!hide?.loginRegister && !session && (
 						<Link href="/authenticate">

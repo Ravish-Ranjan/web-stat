@@ -7,7 +7,7 @@ function FormSection() {
 	const [formType, setFormType] = useState<"login" | "register">("login");
 
 	return (
-		<main className="w-full grid place-items-center min-h-96">
+		<main className="w-full grid place-items-center min-h-96 pb-8">
 			{formType === "login" && <LoginForm setFormType={setFormType} />}
 			{formType === "register" && (
 				<RegisterForm setFormType={setFormType} />

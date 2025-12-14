@@ -1,9 +1,10 @@
-export const runtime = "nodejs";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import type { DefaultSession } from "next-auth";
+import bcryptjs from "bcryptjs";
 
 declare module "next-auth" {
 	interface Session {
@@ -24,10 +25,55 @@ export const authOptions: NextAuthOptions = {
 			clientId: process.env.GITHUB_CLIENT_ID!,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET!,
 		}),
+		CredentialsProvider({
+			name: "Credentials",
+			credentials: {
+				email: { label: "Email", type: "email" },
+				password: { label: "Password", type: "password" },
+			},
+			async authorize(credentials) {
+				if (!credentials?.email || !credentials.password) {
+					throw new Error("Email and Password required");
+				}
+
+				const user = await prisma.user.findUnique({
+					where: { email: credentials.email },
+				});
+
+				if (!user) {
+					throw new Error("No user found with this email");
+				}
+
+				if (user.deleted) {
+					throw new Error("Account has been deleted");
+				}
+
+				if (!user.password) {
+					throw new Error("Please sign in with OAuth provider");
+				}
+
+				const isPasswordValid = await bcryptjs.compare(
+					credentials.password,
+					user.password
+				);
+
+				if (!isPasswordValid) {
+					throw new Error("Invalid password");
+				}
+
+				return {
+					id: user.id,
+					email: user.email,
+					name: user.name,
+					image: user.avatar,
+				};
+			},
+		}),
 	],
 	callbacks: {
 		async signIn({ user, account, profile }) {
 			if (!user.email) return false;
+			if (account?.provider === "credentials") return true;
 
 			try {
 				const existingUser = await prisma.user.findUnique({
@@ -49,7 +95,10 @@ export const authOptions: NextAuthOptions = {
 
 				const isVerified =
 					account?.provider === "google"
-						? Boolean((profile as { email_verified?: boolean })?.email_verified)
+						? Boolean(
+								(profile as { email_verified?: boolean })
+									?.email_verified
+						  )
 						: true;
 
 				await prisma.user.create({
@@ -100,6 +149,17 @@ export const authOptions: NextAuthOptions = {
 		strategy: "jwt",
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 	},
-
+	cookies: {
+		sessionToken: {
+			name: `next-auth.session-token`,
+			options: {
+				httpOnly: true,
+				sameSite: "lax",
+				path: "/",
+				secure: process.env.NODE_ENV === "production",
+			},
+		},
+	},
 	secret: process.env.NEXTAUTH_SECRET,
+	debug: process.env.NODE_ENV === "development",
 };

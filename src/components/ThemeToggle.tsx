@@ -25,7 +25,7 @@ function ThemeToggle() {
 	};
 
 	return (
-		<Button variant={"base"} onClick={handleModeChange}>
+		<Button variant={"outline"} onClick={handleModeChange}>
 			{mode === "dark" && <Moon />}
 			{mode === "light" && <Sun />}
 			{mode === "system" && <System />}

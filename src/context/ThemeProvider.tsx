@@ -8,10 +8,10 @@ interface ThemeProviderProps {
 }
 
 export default function ThemeProvider({ children }: ThemeProviderProps) {
-	const initTheme = useModeStore((state) => state.initMode);
+	const { initMode } = useModeStore();
 
 	useEffect(() => {
-		initTheme();
-	}, [initTheme]);
+		initMode();
+	}, [initMode]);
 	return <>{children}</>;
 }

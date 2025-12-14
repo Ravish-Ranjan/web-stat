@@ -8,7 +8,6 @@ type Mode = "light" | "dark" | "system";
 interface ModeStore {
 	mode: Mode;
 	setMode: (mode: Mode) => void;
-	toggleMode: () => void;
 	initMode: () => void;
 	getTheme: () => "light" | "dark";
 }
@@ -18,30 +17,14 @@ export const useModeStore = create<ModeStore>((set, get) => ({
 	setMode: (mode) => {
 		localStorage.setItem(MODE_KEY, mode);
 		set({ mode });
-		if (mode === "dark") {
-			document.documentElement.classList.add("dark");
-		} else if (mode === "light") {
-			document.documentElement.classList.remove("dark");
-		} else {
-			document.documentElement.classList.remove("dark");
-			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-				document.documentElement.classList.add("dark");
-			}
-		}
+		applyTheme(mode);
 	},
-	toggleMode: () =>
-		set((state) => {
-			const newMode = state.mode === "dark" ? "light" : "dark";
-			localStorage.setItem(MODE_KEY, newMode);
-			if (newMode === "dark")
-				document.documentElement.classList.add("dark");
-			else document.documentElement.classList.remove("dark");
-			return { mode: newMode };
-		}),
 	initMode: () => {
-		const saved = localStorage.getItem(MODE_KEY) as Mode;
-		if (saved) set({ mode: saved });
-		else {
+		const saved = (localStorage.getItem(MODE_KEY) as Mode) || "system";
+		if (saved) {
+			set({ mode: saved });
+			applyTheme(saved);
+		} else {
 			const systemPref = window.matchMedia("(prefers-color-scheme: dark)")
 				.matches
 				? "dark"
@@ -61,3 +44,15 @@ export const useModeStore = create<ModeStore>((set, get) => ({
 		return "light";
 	},
 }));
+
+function applyTheme(mode: Mode) {
+	if (
+		mode === "dark" ||
+		(mode === "system" &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches)
+	) {
+		document.documentElement.classList.add("dark");
+	} else {
+		document.documentElement.classList.remove("dark");
+	}
+}
