@@ -13,9 +13,9 @@ export default cva(
 					"border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
 				base: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
 				secondary:
-					"bg-ws-secondary-500 dark:bg-ws-secondary-600 text-primary-foreground hover:bg-ws-secondary-700/80 dark:hover:bg-ws-secondary-400/80",
+					"bg-ws-secondary-500 dark:bg-ws-secondary-600 text-white hover:bg-ws-secondary-700/80 dark:hover:bg-ws-secondary-400/80",
 				primary:
-					"bg-ws-primary-500 dark:bg-ws-primary-600 text-primary-foreground hover:bg-ws-primary-700/80 dark:hover:bg-ws-primary-400/80",
+					"bg-ws-primary-500 dark:bg-ws-primary-600 text-white hover:bg-ws-primary-700/80 dark:hover:bg-ws-primary-400/80",
 				ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
 				link: "text-primary underline-offset-4 hover:underline",
 			},

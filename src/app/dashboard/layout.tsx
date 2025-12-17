@@ -17,17 +17,13 @@ import {
 } from "@/components/ui/sidebar";
 import UserButton from "@/components/UserButton";
 import ThemeProvider from "@/context/ThemeProvider";
-import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { metadata } from "../layout";
 
-export const metadata: Metadata = {
-	title: "Dashboard | WebStats",
-	description: "Website to check status of you websites",
-	icons: "/assets/icons/logo.svg",
-};
+metadata.title = "Dashboard | WebStats"
 
 const sidebarItems: {
 	groupLabel: string;
@@ -124,33 +120,29 @@ export default async function RootLayout({
 	const session = await getServerSession();
 	if (!session) redirect("/authenticate");
 	return (
-		<html lang="en">
-			<body>
-				<ThemeProvider>
-					<div className="bg-ws-accent-500 dark:bg-ws-base-700 min-h-dvh w-full">
-						<SidebarProvider>
-							<DashboardSidebar />
-							<main className="w-full">
-								<Topbar
-									hide={{
-										links: true,
-										leftSection: true,
-										userbutton: true,
-									}}
-								>
-									<SidebarTrigger
-										className="mr-auto h-full"
-										variant={"outline"}
-										size={"lg"}
-									/>
-								</Topbar>
-								{children}
-							</main>
-						</SidebarProvider>
-					</div>
-					<ToastConfigured />
-				</ThemeProvider>
-			</body>
-		</html>
+		<ThemeProvider>
+			<div className="bg-ws-accent-500 dark:bg-ws-base-700 min-h-dvh w-full">
+				<SidebarProvider>
+					<DashboardSidebar />
+					<main className="w-full">
+						<Topbar
+							hide={{
+								links: true,
+								leftSection: true,
+								userbutton: true,
+							}}
+						>
+							<SidebarTrigger
+								className="mr-auto h-full"
+								variant={"outline"}
+								size={"lg"}
+							/>
+						</Topbar>
+						{children}
+					</main>
+				</SidebarProvider>
+			</div>
+			<ToastConfigured />
+		</ThemeProvider>
 	);
 }

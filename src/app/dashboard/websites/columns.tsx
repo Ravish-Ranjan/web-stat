@@ -1,7 +1,13 @@
 "use client";
 
-import { LinkIcon } from "@/assets/misc";
+import { LinkIcon, SettingsIcon } from "@/assets/misc";
 import { Muted } from "@/components/Typography";
+import Button from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
@@ -62,7 +68,7 @@ export const columns: ColumnDef<WebsiteType>[] = [
 		header: "Url",
 		cell: ({ row }) => {
 			return (
-				<Link href={row.getValue("url")}>
+				<Link href={row.getValue("url")} target="_blank">
 					<GetStyledUrl url={String(row.getValue("url"))} />
 				</Link>
 			);
@@ -74,5 +80,20 @@ export const columns: ColumnDef<WebsiteType>[] = [
 		cell: ({ row }) => {
 			return new Date(row.getValue("createdAt")).toDateString();
 		},
+	},
+	{
+		id: "actions",
+		cell: ({ row }) => (
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button size={"sm"} variant={"outline"} className="px-0.5">
+						<SettingsIcon className="stroke-black dark:stroke-ws-primary-500"/>
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					
+				</DropdownMenuContent>
+			</DropdownMenu>
+		),
 	},
 ];

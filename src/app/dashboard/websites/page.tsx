@@ -1,40 +1,36 @@
 import { H4 } from "@/components/Typography";
 import { DataTable } from "@/components/ui/data-table";
 import { columns, type WebsiteType } from "./columns";
+import AddWebsiteSection from "./AddWebsiteSection";
+import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-const data: WebsiteType[] = [
-	{
-		name: "First",
-		description: "first-link",
-		url: "https://ravishdev.org/api/org/ip/create/new/something",
-		createdAt: new Date(),
-	},
-	{
-		description: "second-link",
-		url: "https://logisick.ravishdev.org",
-		createdAt: new Date(),
-	},
-	{
-		name: "Third",
-		url: "https://encode.ravishdev.org",
-		createdAt: new Date(),
-	},
-	{
-		url: "https://resource-monitor.ravishdev.org",
-		createdAt: new Date(),
-	},
-];
-
-function page() {
+async function Page() {
+	const session = await getServerSession(authOptions);
+	const data: WebsiteType[] = (await prisma.website.findMany({
+		where: {
+			userId: session?.user.id,
+		},
+		select: {
+			name: true,
+			description: true,
+			createdAt: true,
+			url: true,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	})) as WebsiteType[];
 	return (
-		<div className="grid p-4">
-			<H4>Websites</H4>
+		<div className="grid p-4 gap-2">
+			<div className="outline-1 p-2 rounded-lg flex justify-between items-center">
+				<H4>Websites</H4>
+				<AddWebsiteSection />
+			</div>
 			<DataTable columns={columns} data={data} />
-			{/* add new website */}
-			{/* update website */}
-			{/* delete website */}
 		</div>
 	);
 }
 
-export default page;
+export default Page;
