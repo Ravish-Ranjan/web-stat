@@ -154,3 +154,47 @@ export function SettingsIcon(props: SVGProps<SVGSVGElement>) {
 		</svg>
 	);
 }
+
+export function ArrowUpDownIcon(props: SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="1em"
+			height="1em"
+			viewBox="0 0 24 24"
+			{...props}
+		>
+			<path
+				fill="none"
+				stroke="#888888"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+				d="m21 16l-4 4l-4-4m4 4V4M3 8l4-4l4 4M7 4v16"
+			/>
+		</svg>
+	);
+}
+
+export function SearchIcon(props: SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="1em"
+			height="1em"
+			viewBox="0 0 24 24"
+			{...props}
+		>
+			<g
+				fill="none"
+				stroke="#888888"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			>
+				<path d="m21 21l-4.34-4.34" />
+				<circle cx="11" cy="11" r="8" />
+			</g>
+		</svg>
+	);
+}

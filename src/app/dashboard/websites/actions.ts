@@ -89,3 +89,53 @@ export async function addWebsite(
 		};
 	}
 }
+
+export async function deleteWebsite(
+	websiteId: string,
+	prevState:FormState,
+	formData: FormData
+): Promise<FormState> {
+	const session = await getServerSession(authOptions);
+	if (!session?.user.id) return { message: "Unauthorized", success: false };
+
+	const deleteWebsiteSchema = z.object({
+		text: z.string().min(1, "Enter the text first"),
+		id: z.string(),
+	});
+
+	const validatedFields = deleteWebsiteSchema.safeParse({
+		text: formData.get("text"),
+		id: websiteId,
+	});
+
+	if (!validatedFields.success) {
+		return {
+			message: "Validation failed",
+			success: false,
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
+	}
+
+	const { text, id } = validatedFields.data;
+
+	try {
+		const trimmedText = text.trim();
+		if (!(trimmedText === "Delete this website")) {
+			return {
+				message: "Text doesn't match",
+				success: false,
+			};
+		}
+
+		await prisma.website.delete({
+			where: { id: id, userId: session.user.id },
+		});
+		revalidatePath("/dashboard/websites")
+		return { message: "Website deleted", success: true };
+	} catch {
+		return {
+			message: "Error deleting website",
+			success: false,
+		};
+	}
+}

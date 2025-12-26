@@ -43,7 +43,7 @@ model Website {
 
   @@index([userId])
   @@index([url])
-}
+}e
 
 model Check {
   id           String   @id @default(cuid())
