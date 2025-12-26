@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpDownIcon, LinkIcon } from "@/assets/misc";
+import { ArrowUpDownIcon } from "@/assets/misc";
 import { Muted } from "@/components/Typography";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
@@ -8,42 +8,7 @@ import WebsiteActionCell from "./WebsiteActionCell";
 // import { useRouter } from "next/router";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/ui/button";
-
-export type WebsiteType = {
-	name?: string;
-	url: string;
-	description?: string;
-	createdAt: Date;
-	id: string;
-};
-
-function GetStyledUrl({
-	url,
-	urlDepth = 5,
-	showIcon = true,
-}: {
-	url: string;
-	urlDepth?: number;
-	showIcon?: boolean;
-}) {
-	const removedProtocolUrl = url.split("//")[1];
-	let routeSection = removedProtocolUrl.split("/").splice(1);
-	if (routeSection.length > urlDepth) {
-		routeSection = routeSection.splice(0, urlDepth);
-		routeSection[routeSection.length - 1] += "/...";
-	}
-	return (
-		<span className="flex items-end-safe">
-			{removedProtocolUrl.split("/")[0]}
-			{routeSection.length > 0 && (
-				<span className="text-gray-500">/{routeSection.join("/")}</span>
-			)}
-			{showIcon && (
-				<LinkIcon className="ml-2 stroke-blue-500 dark:stroke-blue-400" />
-			)}
-		</span>
-	);
-}
+import StyledUrl from "@/components/StyledUrl";
 
 function SortableHeader({ column, label }: { column: string; label: string }) {
 	const router = useRouter();
@@ -72,10 +37,11 @@ function SortableHeader({ column, label }: { column: string; label: string }) {
 		<Button
 			variant="ghost"
 			onClick={handleSort}
-			className="flex items-center gap-2"
+			size={"sm"}
+			className="flex items-center gap-2 px-0 w-full justify-start"
 		>
 			{label}
-			<ArrowUpDownIcon className="h-4 w-4" />
+			<ArrowUpDownIcon className="size-4" />
 		</Button>
 	);
 }
@@ -108,8 +74,8 @@ export const columns: ColumnDef<WebsiteType>[] = [
 		header: () => <SortableHeader column="url" label="Url" />,
 		cell: ({ row }) => {
 			return (
-				<Link href={row.getValue("url")} target="_blank">
-					<GetStyledUrl url={String(row.getValue("url"))} />
+				<Link href={row.getValue("url")} target="_blank" title={row.original.url}>
+					<StyledUrl url={String(row.getValue("url"))} />
 				</Link>
 			);
 		},
@@ -123,18 +89,9 @@ export const columns: ColumnDef<WebsiteType>[] = [
 	},
 	{
 		id: "actions",
+		header:"Actions",
 		cell: ({ row }) => {
-			return (
-				<WebsiteActionCell
-					websiteId={row.original.id}
-					url={
-						<GetStyledUrl
-							url={String(row.original.url)}
-							showIcon={false}
-						/>
-					}
-				/>
-			);
+			return <WebsiteActionCell websiteData={row.original} />;
 		},
 	},
 ];

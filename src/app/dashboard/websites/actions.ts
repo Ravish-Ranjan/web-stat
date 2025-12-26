@@ -12,21 +12,6 @@ type FormState = {
 	errors?: Record<string, string[]> | undefined;
 };
 
-const websiteSchema = z.object({
-	url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
-	name: z
-		.string()
-		.min(2, "Name must be at least 2 characters")
-		.max(100, "Name must be less than 100 characters")
-		.optional()
-		.or(z.literal("")),
-	description: z
-		.string()
-		.max(500, "Description must be less than 500 characters")
-		.optional()
-		.or(z.literal("")),
-});
-
 export async function addWebsite(
 	prevState: FormState,
 	formData: FormData
@@ -34,6 +19,33 @@ export async function addWebsite(
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
+
+	const websiteSchema = z.object({
+		url: z
+			.string()
+			.url("Please enter a valid URL")
+			.min(1, "URL is required"),
+		name: z
+			.string()
+			.refine(
+				(val) => val === "" || val.length >= 2,
+				"Name must be at least 2 characters"
+			)
+			.refine(
+				(val) => val === "" || val.length <= 100,
+				"Name must be less than 100 characters"
+			)
+			.optional()
+			.transform((val) => (val === "" ? undefined : val)),
+		description: z
+			.string()
+			.refine(
+				(val) => val === "" || val.length <= 500,
+				"Description must be less than 500 characters"
+			)
+			.optional()
+			.transform((val) => (val === "" ? undefined : val)),
+	});
 
 	const validatedFields = websiteSchema.safeParse({
 		url: formData.get("url"),
@@ -92,7 +104,7 @@ export async function addWebsite(
 
 export async function deleteWebsite(
 	websiteId: string,
-	prevState:FormState,
+	prevState: FormState,
 	formData: FormData
 ): Promise<FormState> {
 	const session = await getServerSession(authOptions);
@@ -130,11 +142,91 @@ export async function deleteWebsite(
 		await prisma.website.delete({
 			where: { id: id, userId: session.user.id },
 		});
-		revalidatePath("/dashboard/websites")
+		revalidatePath("/dashboard/websites");
 		return { message: "Website deleted", success: true };
 	} catch {
 		return {
 			message: "Error deleting website",
+			success: false,
+		};
+	}
+}
+
+export async function editWebsite(
+	websiteId: string,
+	prevState: FormState,
+	formData: FormData
+): Promise<FormState> {
+	const session = await getServerSession(authOptions);
+
+	if (!session?.user.id) return { message: "Unauthorized", success: false };
+
+	const editWebsiteSchema = z.object({
+		name: z
+			.string()
+			.transform((val) => (val.trim() === "" ? undefined : val.trim()))
+			.optional()
+			.refine(
+				(val) => val === undefined || val.length >= 2,
+				"Name must be at least 2 characters"
+			)
+			.refine(
+				(val) => val === undefined || val.length <= 100,
+				"Name must be less than 100 characters"
+			),
+		description: z
+			.string()
+			.transform((val) => (val.trim() === "" ? undefined : val.trim()))
+			.optional()
+			.refine(
+				(val) => val === undefined || val.length <= 500,
+				"Description must be less than 500 characters"
+			),
+	});
+
+	const validatedFields = editWebsiteSchema.safeParse({
+		name: formData.get("name"),
+		description: formData.get("description"),
+	});
+	if (!validatedFields.success) {
+		return {
+			message: "Validation failed",
+			success: false,
+			errors: validatedFields.error.flatten().fieldErrors,
+		};
+	}
+	const { name, description } = validatedFields.data;
+
+	try {
+		const existingWebsite = await prisma.website.findUnique({
+			where: { id: websiteId },
+		});
+
+		if (!existingWebsite || existingWebsite.userId !== session.user.id) {
+			return {
+				message: "You don't have any website like this",
+				success: false,
+				errors: { url: ["This website is not in your list"] },
+			};
+		}
+
+		await prisma.website.update({
+			where: { id: websiteId },
+			data: {
+				name: name || null,
+				description: description || null,
+			},
+		});
+
+		revalidatePath("/dashboard/websites");
+		return {
+			message: "Website edited successfully!",
+			success: true,
+		};
+	} catch (error) {
+		console.error("Error editing website:", error);
+		return {
+			message: "Error editing website",
 			success: false,
 		};
 	}

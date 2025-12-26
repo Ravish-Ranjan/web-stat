@@ -7,26 +7,36 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowUpDownIcon } from "@/assets/misc";
 
-export function TableSkeleton() {
+export function TableSkeleton({ columns }: { columns: string[] }) {
 	return (
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead>Email</TableHead>
-					<TableHead>Created</TableHead>
+					{columns.map((value, i) => {
+						return (
+							<TableHead key={i}>
+								<span className="flex gap-2 items-center">
+									{value}{" "}
+									<ArrowUpDownIcon className="size-4" />
+								</span>
+							</TableHead>
+						);
+					})}
 				</TableRow>
 			</TableHeader>
 
 			<TableBody>
-				{Array.from({ length: 10 }).map((_, i) => (
+				{Array.from({ length: 5 }).map((_, i) => (
 					<TableRow key={i}>
-						<TableCell>
-							<Skeleton className="h-4 w-[200px]" />
-						</TableCell>
-						<TableCell>
-							<Skeleton className="h-4 w-[120px]" />
-						</TableCell>
+						{columns.map((_, i) => {
+							return (
+								<TableCell key={i}>
+									<Skeleton className="h-8" />
+								</TableCell>
+							);
+						})}
 					</TableRow>
 				))}
 			</TableBody>

@@ -3,7 +3,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { columns, WebsiteType } from "./columns";
+import { columns } from "./columns";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -22,7 +22,7 @@ async function WebsiteTable({
 	const q = searchParams.q ?? "";
 	const sortBy = searchParams.sortBy ?? "createdAt";
 	const sortOrder = searchParams.sortOrder ?? "desc";
-	const pageSize = 5;
+	const pageSize = 10;
 	const where: Prisma.WebsiteWhereInput | undefined = q
 		? {
 				AND: {

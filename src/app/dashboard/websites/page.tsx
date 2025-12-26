@@ -8,6 +8,7 @@ import Pagination from "@/components/Pagination";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface PageProps {
 	searchParams: Promise<{
@@ -21,21 +22,34 @@ interface PageProps {
 async function Page({ searchParams }: PageProps) {
 	const params = await searchParams;
 	const session = await getServerSession(authOptions);
+	if (!session) redirect("/authenticate");
 	const totalItems = await prisma.website.count({
 		where: { userId: session?.user.id },
 	});
-	const pageSize = 5
+	const pageSize = 10;
 	const totalPage = Math.ceil(totalItems / pageSize);
 
 	return (
 		<div className="grid p-4 gap-2">
-			<div className="outline-1 p-2 rounded-lg flex justify-between items-center">
+			<div className="outline-1 p-1 md:p-2 rounded-lg flex justify-between items-center">
 				<H4>Websites</H4>
 				<AddWebsiteSection />
 			</div>
 			<div className="grid gap-2">
 				<SearchInput />
-				<Suspense fallback={<TableSkeleton />}>
+				<Suspense
+					fallback={
+						<TableSkeleton
+							columns={[
+								"Name",
+								"Description",
+								"Url",
+								"Added On",
+								"Actions",
+							]}
+						/>
+					}
+				>
 					<WebsiteTable searchParams={params} />
 				</Suspense>
 				<Pagination totalPage={totalPage || 1} />

@@ -1,5 +1,5 @@
+"use client";
 import { Close } from "@/assets/misc";
-import { Loader2Icon } from "@/assets/sonner";
 import ModalWrapper from "@/components/ModalWrapper";
 import Button from "@/components/ui/button";
 import {
@@ -9,20 +9,20 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Dispatch,
 	SetStateAction,
 	useActionState,
 	useEffect,
 	useRef,
-	useState,
 } from "react";
-import { deleteWebsite } from "./actions";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { editWebsite } from "./actions";
+import { Loader2Icon } from "@/assets/sonner";
 import { toast } from "sonner";
-import { Small } from "@/components/Typography";
 import StyledUrl from "@/components/StyledUrl";
+import { Small } from "@/components/Typography";
 
 const initialState: {
 	message: string;
@@ -33,25 +33,22 @@ const initialState: {
 	success: false,
 };
 
-interface DeleteWebsiteModalProps {
+interface EditWebsiteModalProps {
 	open?: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-	websiteId: string;
-	url: string;
+	websiteData: WebsiteType;
 }
 
-function DeleteWebsiteModal({
+function EditWebsiteModal({
 	open = false,
 	setOpen,
-	websiteId,
-	url,
-}: DeleteWebsiteModalProps) {
-	const [text, setText] = useState("");
-	const formRef = useRef<HTMLFormElement>(null);
+	websiteData,
+}: EditWebsiteModalProps) {
 	const [state, formAction, isPending] = useActionState(
-		deleteWebsite.bind(null, websiteId),
+		editWebsite.bind(null, websiteData.id),
 		initialState
 	);
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		if (state.message) {
@@ -74,20 +71,25 @@ function DeleteWebsiteModal({
 				}
 			}
 		}
-	}, [setOpen, state.errors, state.message, state.success]);
+	}, [setOpen, state.message, state.errors, state.success]);
+
 	return (
 		<ModalWrapper open={open}>
 			<Card className="w-sm sm:w-md">
 				<CardHeader className="flex justify-between items-center">
-					<CardTitle>Delete website</CardTitle>
+					<CardTitle>Edit website</CardTitle>
 					<Button size={"icon"} onClick={() => setOpen(false)}>
 						<Close />
 					</Button>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="grid gap-2">
+					<Small className="flex gap-2">
+						URL :{" "}
+						<StyledUrl url={websiteData.url} showIcon={false} />
+					</Small>
 					<form
+						id="edit-website-form"
 						action={formAction}
-						id="delete-website-form"
 						ref={formRef}
 						className="grid gap-2"
 					>
@@ -96,24 +98,22 @@ function DeleteWebsiteModal({
 							className="hidden"
 							aria-hidden="true"
 						/>
-						<Label className="grid">
-							<Small className="flex gap-2">
-								URL : <StyledUrl url={url} showIcon={false} />
-							</Small>
-							<span>
-								Enter &quot;
-								<span className="text-red-500">
-									Delete this website
-								</span>
-								&quot; below *
-							</span>
+						<Label className="grid ">
+							Name
 							<Input
+								name="name"
 								type="text"
-								name="text"
-								placeholder="Enter text given above"
-								required
-								value={text}
-								onChange={(e) => setText(e.target.value)}
+								placeholder="Edit website's name"
+								defaultValue={websiteData.name}
+							/>
+						</Label>
+						<Label className="grid ">
+							Description
+							<Input
+								name="description"
+								type="text"
+								placeholder="Edit website's description"
+								defaultValue={websiteData.description}
 							/>
 						</Label>
 					</form>
@@ -127,16 +127,15 @@ function DeleteWebsiteModal({
 					</Button>
 					<Button
 						type="submit"
-						form="delete-website-form"
-						disabled={isPending || text !== "Delete this website"}
+						form="edit-website-form"
+						disabled={isPending}
 						variant={"primary"}
-						className="w-max"
 						onClick={() => formRef.current?.requestSubmit()}
 					>
 						{isPending ? (
 							<Loader2Icon className="animate-spin" />
 						) : (
-							"Delete Website"
+							"Edit Website"
 						)}
 					</Button>
 				</CardFooter>
@@ -145,4 +144,4 @@ function DeleteWebsiteModal({
 	);
 }
 
-export default DeleteWebsiteModal;
+export default EditWebsiteModal;

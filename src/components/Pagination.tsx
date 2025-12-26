@@ -30,7 +30,6 @@ function Pagination({ totalPage }: { totalPage: number }) {
 					key={pageNum}
 					variant={page === pageNum ? "default" : "outline"}
 					onClick={() => handlePageClick(pageNum)}
-					className="mx-1"
 					size={"sm"}
 				>
 					{pageNum}

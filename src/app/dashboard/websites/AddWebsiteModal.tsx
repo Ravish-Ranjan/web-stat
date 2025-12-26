@@ -70,7 +70,7 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 				}
 			}
 		}
-	}, [setOpen, state]);
+	}, [setOpen, state.errors, state.message, state.success]);
 
 	return (
 		<ModalWrapper open={open}>
@@ -86,7 +86,13 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 						id="add-website-form"
 						action={formAction}
 						ref={formRef}
+						className="grid gap-2"
 					>
+						<button
+							type="submit"
+							className="hidden"
+							aria-hidden="true"
+						/>
 						<Label className="grid ">
 							Url *
 							<Input
@@ -141,6 +147,7 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 						form="add-website-form"
 						disabled={isPending}
 						variant={"primary"}
+						onClick={() => formRef.current?.requestSubmit()}
 					>
 						{isPending ? (
 							<Loader2Icon className="animate-spin" />

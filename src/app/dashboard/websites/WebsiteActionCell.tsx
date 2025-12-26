@@ -9,16 +9,12 @@ import {
 import DeleteWebsiteModal from "./DeleteWebsiteModal";
 import Button from "@/components/ui/button";
 import { SettingsIcon } from "@/assets/misc";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
+import EditWebsiteModal from "./EditWebsiteModal";
 
-function WebsiteActionCell({
-	websiteId,
-	url,
-}: {
-	websiteId: string;
-	url: ReactNode;
-}) {
-	const [open, setOpen] = useState(false);
+function WebsiteActionCell({ websiteData }: { websiteData: WebsiteType }) {
+	const [openDeleteWebsiteModal, setOpenDeleteWebsiteModal] = useState(false);
+	const [openEditWebsiteModal, setOpenEditWebsiteModal] = useState(false);
 	return (
 		<>
 			<DropdownMenu>
@@ -27,9 +23,13 @@ function WebsiteActionCell({
 						<SettingsIcon className="stroke-black dark:stroke-ws-primary-500" />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent>
+				<DropdownMenuContent className="grid gap-1">
 					<DropdownMenuItem asChild>
-						<Button variant={"outline"} className="w-full">
+						<Button
+							variant={"outline"}
+							className="w-full"
+							onClick={() => setOpenEditWebsiteModal(true)}
+						>
 							Edit
 						</Button>
 					</DropdownMenuItem>
@@ -37,7 +37,7 @@ function WebsiteActionCell({
 						<Button
 							variant={"destructive"}
 							className="w-full"
-							onClick={() => setOpen(true)}
+							onClick={() => setOpenDeleteWebsiteModal(true)}
 						>
 							Delete
 						</Button>
@@ -45,10 +45,15 @@ function WebsiteActionCell({
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<DeleteWebsiteModal
-				setOpen={setOpen}
-				websiteId={websiteId}
-				open={open}
-				url={url}
+				setOpen={setOpenDeleteWebsiteModal}
+				websiteId={websiteData.id}
+				open={openDeleteWebsiteModal}
+				url={websiteData.url}
+			/>
+			<EditWebsiteModal
+				setOpen={setOpenEditWebsiteModal}
+				open={openEditWebsiteModal}
+				websiteData={websiteData}
 			/>
 		</>
 	);
