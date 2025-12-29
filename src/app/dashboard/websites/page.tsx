@@ -31,7 +31,7 @@ async function Page({ searchParams }: PageProps) {
 
 	return (
 		<div className="grid p-4 gap-2">
-			<div className="outline-1 p-1 md:p-2 rounded-lg flex justify-between items-center">
+			<div className="outline-1 p-1 px-2 md:p-2 md:px-4 rounded-lg flex justify-between items-center bg-ws-accent-200 dark:bg-ws-base-600">
 				<H4>Websites</H4>
 				<AddWebsiteSection />
 			</div>

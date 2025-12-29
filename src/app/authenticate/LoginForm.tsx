@@ -63,7 +63,9 @@ function LoginForm({ setFormType }: LoginFormProps) {
 		<Card className="w-xs md:w-md max-w-11/12 shadow-2xl grid gap-2">
 			<CardHeader>
 				<CardTitle>
-					<H4 className="text-center ms:text-start">Login into your account</H4>
+					<H4 className="text-center ms:text-start">
+						Login into your account
+					</H4>
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="grid">
@@ -108,7 +110,12 @@ function LoginForm({ setFormType }: LoginFormProps) {
 					</div>
 				</div>
 				{/* email password */}
-				<form className="grid mt-4 gap-2">
+				<form className="grid mt-4 gap-2" id="login-form">
+					<button
+						type="submit"
+						className="hidden"
+						aria-hidden="true"
+					/>
 					<SeparatorHeading className="bg-ws-accent-500 dark:bg-ws-base-500">
 						Or Use Credentials
 					</SeparatorHeading>
@@ -155,6 +162,7 @@ function LoginForm({ setFormType }: LoginFormProps) {
 						disabled={isLoggingIn}
 						type="submit"
 						className="mt-4"
+						form="login-form"
 					>
 						Login
 					</Button>

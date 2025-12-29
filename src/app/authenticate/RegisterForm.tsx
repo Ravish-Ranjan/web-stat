@@ -148,7 +148,7 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 					</div>
 				</div>
 				{/* email password */}
-				<form className="grid mt-4 gap-2">
+				<form className="grid mt-4 gap-2" id="register-form">
 					<SeparatorHeading className="bg-ws-accent-500 dark:bg-ws-base-500">
 						Or Use Credentials
 					</SeparatorHeading>
@@ -224,6 +224,7 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 						disabled={isRegistering}
 						type="submit"
 						className="mt-4"
+						form="register-form"
 					>
 						Register
 					</Button>
