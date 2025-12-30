@@ -67,7 +67,7 @@ async function UserButton({
 						/>
 					) : (
 						<Avatar className={clsx("size-7", avatarClass)}>
-							<AvatarFallback className="bg-ws-primary-400 dark:bg-ws-primary-600 text-white">
+							<AvatarFallback className="bg-ws-secondary-400 dark:bg-ws-secondary-600 text-white">
 								{getAvatarName(
 									sesssion.user.name
 										? sesssion.user.name
@@ -77,7 +77,15 @@ async function UserButton({
 						</Avatar>
 					)}
 					<Small className={clsx(textClass)}>
-						{sesssion.user.name?.split(" ").splice(0, 2).join(" ")}
+						{sesssion.user.name
+							? sesssion.user.name
+									?.split(" ")
+									.splice(0, 2)
+									.join(" ")
+							: sesssion.user.email?.substring(0, 15) +
+							  ((sesssion.user.email?.length ?? 0) > 15
+									? "..."
+									: "")}
 					</Small>
 				</Button>
 			</DropdownMenuTrigger>
@@ -104,7 +112,9 @@ async function UserButton({
 						</Link>
 					</DropdownMenuItem>
 				)}
-				<DropdownMenuSeparator />
+				{(!hide?.dashboard || !hide.profile) && !hide?.logout && (
+					<DropdownMenuSeparator />
+				)}
 				{!hide?.logout && (
 					<DropdownMenuItem>
 						<SignOutButton />

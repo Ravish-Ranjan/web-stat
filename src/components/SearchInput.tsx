@@ -59,8 +59,10 @@ export function SearchInput() {
 					type="text"
 					placeholder="Search websites..."
 					value={searchText}
+					name="search-website"
 					onChange={(e) => setSearchText(e.target.value)}
 					className="pl-8 pr-8 text-sm sm:text-md"
+					autoComplete="off"
 				/>
 				{searchText && (
 					<Button

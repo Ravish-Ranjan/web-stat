@@ -80,9 +80,9 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 			});
 
 			if (signInResult?.error) {
-				toast.error(
-					"Account created but failed to sign in. Please try signing in manually."
-				);
+				toast.error("Login Error", {
+					description: "Please try signing in manually.",
+				});
 				setisRegistering(false);
 				return;
 			}
@@ -160,6 +160,8 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 							placeholder="Enter your name"
 							value={form.name}
 							className="text-sm md:text-md"
+							name="name"
+							autoComplete="name"
 							onChange={(e) =>
 								setForm({ ...form, name: e.target.value })
 							}
@@ -173,6 +175,8 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 							placeholder="Enter your email id"
 							value={form.email}
 							className="text-sm md:text-md"
+							name="email"
+							autoComplete="email"
 							onChange={(e) =>
 								setForm({ ...form, email: e.target.value })
 							}
@@ -187,6 +191,8 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 								placeholder="Enter your password"
 								value={form.password}
 								className="text-sm md:text-md"
+								name="password"
+								autoComplete="new-password"
 								onChange={(e) =>
 									setForm({
 										...form,
@@ -211,6 +217,8 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 							placeholder="Re-enter your password"
 							value={form.confirmPassword}
 							className="text-sm md:text-md"
+							name="password"
+							autoComplete="new-password"
 							onChange={(e) =>
 								setForm({
 									...form,

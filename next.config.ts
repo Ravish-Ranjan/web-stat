@@ -8,11 +8,12 @@ const nextConfig: NextConfig = {
 				hostname: "avatars.githubusercontent.com",
 			},
 			{
-				protocol:"https",
-				hostname:"lh3.googleusercontent.com"
-			}
+				protocol: "https",
+				hostname: "lh3.googleusercontent.com",
+			},
 		],
 	},
+	allowedDevOrigins: ['192.168.x.x', '192.168.x.x:3000'],
 };
 
 export default nextConfig;

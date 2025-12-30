@@ -27,6 +27,7 @@ import { Small } from "@/components/Typography";
 const initialState: {
 	message: string;
 	success: boolean;
+	description?: string;
 	errors?: Record<string, string[]> | undefined;
 } = {
 	message: "",
@@ -53,17 +54,24 @@ function EditWebsiteModal({
 	useEffect(() => {
 		if (state.message) {
 			if (state.success) {
-				toast.success(state.message);
+				toast.success(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				formRef.current?.reset();
 				setOpen(false);
 			} else {
-				toast.error(state.message);
+				toast.error(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				if (state.errors) {
 					Object.entries(state.errors).forEach(
 						([field, messages]) => {
 							if (messages && messages.length > 0) {
 								toast.error(messages[0], {
 									id: field,
+									description: state.description ?? "",
 								});
 							}
 						}
@@ -71,7 +79,13 @@ function EditWebsiteModal({
 				}
 			}
 		}
-	}, [setOpen, state.message, state.errors, state.success]);
+	}, [
+		setOpen,
+		state.message,
+		state.errors,
+		state.success,
+		state.description,
+	]);
 
 	return (
 		<ModalWrapper open={open}>
@@ -105,6 +119,7 @@ function EditWebsiteModal({
 								type="text"
 								placeholder="Edit website's name"
 								defaultValue={websiteData.name}
+								autoComplete="off"
 							/>
 						</Label>
 						<Label className="grid ">
@@ -114,6 +129,7 @@ function EditWebsiteModal({
 								type="text"
 								placeholder="Edit website's description"
 								defaultValue={websiteData.description}
+								autoComplete="off"
 							/>
 						</Label>
 					</form>

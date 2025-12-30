@@ -3,7 +3,12 @@ import Topbar from "@/components/Topbar";
 function Page() {
 	return (
 		<>
-			<Topbar />
+			<Topbar
+				links={[
+					{ label: "Dashboard", path: "/dashboard" },
+					{ label: "Profile",path:"/profile" },
+				]}
+			/>
 		</>
 	);
 }

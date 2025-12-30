@@ -25,6 +25,7 @@ import { toast } from "sonner";
 
 const initialState: {
 	message: string;
+	descriptioon?: string;
 	success: boolean;
 	errors?: Record<string, string[]> | undefined;
 } = {
@@ -52,17 +53,24 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 	useEffect(() => {
 		if (state.message) {
 			if (state.success) {
-				toast.success(state.message);
+				toast.success(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				formRef.current?.reset();
 				setOpen(false);
 			} else {
-				toast.error(state.message);
+				toast.error(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				if (state.errors) {
 					Object.entries(state.errors).forEach(
 						([field, messages]) => {
 							if (messages && messages.length > 0) {
 								toast.error(messages[0], {
 									id: field,
+									description: state.description ?? "",
 								});
 							}
 						}
@@ -70,7 +78,13 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 				}
 			}
 		}
-	}, [setOpen, state.errors, state.message, state.success]);
+	}, [
+		setOpen,
+		state.errors,
+		state.message,
+		state.success,
+		state.description,
+	]);
 
 	return (
 		<ModalWrapper open={open}>
@@ -101,6 +115,7 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 								type="url"
 								placeholder="Enter website's Url"
 								value={form.url}
+								autoComplete="off"
 								onChange={(e) => {
 									setForm({ ...form, url: e.target.value });
 								}}
@@ -113,6 +128,7 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 								type="text"
 								placeholder="Enter website's name"
 								value={form.name}
+								autoComplete="off"
 								onChange={(e) => {
 									setForm({ ...form, name: e.target.value });
 								}}
@@ -125,6 +141,7 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 								type="text"
 								placeholder="Enter website's description"
 								value={form.description}
+								autoComplete="off"
 								onChange={(e) => {
 									setForm({
 										...form,

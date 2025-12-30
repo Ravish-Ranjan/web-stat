@@ -99,7 +99,7 @@ export function Loader2Icon(props: SVGProps<SVGSVGElement>) {
 		>
 			<path
 				fill="none"
-				stroke="#888888"
+				stroke="#fff"
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				strokeWidth="2"

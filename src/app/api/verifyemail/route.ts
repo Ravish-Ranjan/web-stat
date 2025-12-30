@@ -2,36 +2,19 @@ import Mailer from "@/lib/mailer";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
+import { revalidatePath } from "next/cache";
 
 export async function createVerificationToken(email: string) {
-	const oldVerificationToken = await prisma.verificationToken.findFirst({
-		where: { identifier: email },
-	});
-	if (oldVerificationToken) {
-		if (oldVerificationToken.expires > new Date()) {
-			return oldVerificationToken.token;
-		} else {
-			await prisma.verificationToken.delete({
-				where: {
-					identifier_token: {
-						identifier: oldVerificationToken.identifier,
-						token: oldVerificationToken.token,
-					},
-				},
-			});
-		}
-	}
-
 	const token = randomBytes(32).toString("hex");
-
 	const expires = new Date();
 	expires.setMinutes(expires.getMinutes() + 15);
-
-	await prisma.verificationToken.create({
-		data: { expires, identifier: email, token },
-	});
-
-	return token;
+	const newObj = await prisma.$transaction([
+		prisma.verificationToken.deleteMany({ where: { identifier: email } }),
+		prisma.verificationToken.create({
+			data: { expires, identifier: email, token },
+		}),
+	]);
+	return newObj[1].token;
 }
 
 export async function POST(request: Request) {
@@ -72,7 +55,7 @@ export async function POST(request: Request) {
 		);
 
 		return NextResponse.json(
-			{ message: "Verification mail sent successfully to your email-id" },
+			{ message: "Email sent successfully." ,description:"Verification mail sent to your email-id"},
 			{ status: 200 }
 		);
 	} catch (error) {
@@ -129,6 +112,7 @@ export async function PATCH(request: Request) {
 				where: { identifier_token: { identifier: email, token } },
 			}),
 		]);
+		revalidatePath("/profile")
 		return NextResponse.json(
 			{ message: "Email verified successfuly" },
 			{ status: 200 }

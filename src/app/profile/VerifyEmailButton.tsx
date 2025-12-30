@@ -7,13 +7,17 @@ import { toast } from "sonner";
 
 interface VerifyEmailButtonProps {
 	user: {
+		name: string | null;
 		id: string;
+		email: string;
+		password: string | null;
 		isVerified: boolean;
-	} & {
-		name?: string | null | undefined;
-		email?: string | null | undefined;
-		image?: string | null | undefined;
-	};
+		avatar: string | null;
+		createdAt: Date;
+		updatedAt: Date;
+		deleted: boolean;
+		deletedOn: Date | null;
+	} | null;
 }
 
 function VerifyEmailButton({ user }: VerifyEmailButtonProps) {
@@ -27,7 +31,7 @@ function VerifyEmailButton({ user }: VerifyEmailButtonProps) {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ userId: user.id }),
+				body: JSON.stringify({ userId: user?.id }),
 			});
 			const data = await res.json();
 
@@ -38,10 +42,11 @@ function VerifyEmailButton({ user }: VerifyEmailButtonProps) {
 				return;
 			}
 
-			toast.success(
-				data.message ||
-					"Verification mail sent successfully to your email-id"
-			);
+			toast.success(data.message || "Email sent successfully.", {
+				description:
+					data.description ||
+					"Verification mail sent to your email-id",
+			});
 		} catch {
 			toast.error("An error occured. Please try again.");
 		} finally {
@@ -50,10 +55,10 @@ function VerifyEmailButton({ user }: VerifyEmailButtonProps) {
 	};
 	return (
 		<>
-			{!user.isVerified && (
+			{!user?.isVerified && (
 				<Button
 					variant={"primary"}
-					className="ml-auto"
+					className="md:ml-auto"
 					disabled={pending}
 					onClick={handleSendVerifyEmailMail}
 				>

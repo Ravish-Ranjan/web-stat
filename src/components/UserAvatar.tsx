@@ -33,7 +33,7 @@ async function UserAvatar({
 				/>
 			) : (
 				<Avatar className={clsx("size-7", className)}>
-					<AvatarFallback className="bg-ws-primary-400 dark:bg-ws-primary-600 text-white">
+					<AvatarFallback className="bg-ws-secondary-400 dark:bg-ws-secondary-600 text-white">
 						{getAvatarName(
 							session?.user.name
 								? session?.user.name

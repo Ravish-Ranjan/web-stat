@@ -126,6 +126,8 @@ function LoginForm({ setFormType }: LoginFormProps) {
 							required
 							placeholder="Enter your email id"
 							value={form.email}
+							name="email"
+							autoComplete="email"
 							className="text-sm md:text-md"
 							onChange={(e) =>
 								setForm({ ...form, email: e.target.value })
@@ -140,6 +142,8 @@ function LoginForm({ setFormType }: LoginFormProps) {
 								required
 								placeholder="Enter your password"
 								value={form.password}
+								name="password"
+								autoComplete="current-password"
 								className="text-sm md:text-md"
 								onChange={(e) =>
 									setForm({

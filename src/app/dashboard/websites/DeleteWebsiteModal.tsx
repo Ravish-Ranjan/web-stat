@@ -27,6 +27,7 @@ import StyledUrl from "@/components/StyledUrl";
 const initialState: {
 	message: string;
 	success: boolean;
+	description?: string;
 	errors?: Record<string, string[]> | undefined;
 } = {
 	message: "",
@@ -56,17 +57,24 @@ function DeleteWebsiteModal({
 	useEffect(() => {
 		if (state.message) {
 			if (state.success) {
-				toast.success(state.message);
+				toast.success(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				formRef.current?.reset();
 				setOpen(false);
 			} else {
-				toast.error(state.message);
+				toast.error(
+					state.message,
+					state.description ? { description: state.description } : {}
+				);
 				if (state.errors) {
 					Object.entries(state.errors).forEach(
 						([field, messages]) => {
 							if (messages && messages.length > 0) {
 								toast.error(messages[0], {
 									id: field,
+									description: state.description ?? "",
 								});
 							}
 						}
@@ -74,7 +82,13 @@ function DeleteWebsiteModal({
 				}
 			}
 		}
-	}, [setOpen, state.errors, state.message, state.success]);
+	}, [
+		setOpen,
+		state.errors,
+		state.message,
+		state.success,
+		state.description,
+	]);
 	return (
 		<ModalWrapper open={open}>
 			<Card className="w-sm sm:w-md">
@@ -113,6 +127,7 @@ function DeleteWebsiteModal({
 								placeholder="Enter text given above"
 								required
 								value={text}
+								autoComplete="off"
 								onChange={(e) => setText(e.target.value)}
 							/>
 						</Label>

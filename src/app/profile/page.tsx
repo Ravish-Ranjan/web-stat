@@ -2,8 +2,6 @@ import Topbar from "@/components/Topbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { metadata } from "../layout";
-import Link from "next/link";
-import Button from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import clsx from "clsx";
 import { authOptions } from "@/lib/auth";
@@ -20,46 +18,32 @@ async function page() {
 		redirect("/authenticate");
 	}
 	const user = session.user;
-	user.isVerified = false;
 	const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
 	return (
 		<>
 			{/* topbar */}
-			<Topbar hide={{ links: true }}>
-				<div className="mr-auto">
-					<Link href={"/dashboard"}>
-						<Button variant={"link"} size={"sm"} className="px-1">
-							Dashboard
-						</Button>
-					</Link>
-					<Link href={"/"}>
-						<Button variant={"link"} size={"sm"} className="px-1">
-							Homepage
-						</Button>
-					</Link>
-				</div>
-			</Topbar>
+			<Topbar links={[{ label: "Dashboard", path: "/dashboard" }]} />
 			{/* main page */}
 			<div className="w-full grid place-items-center">
 				{/* use island */}
-				<section className="p-6 flex gap-6 justify-start items-center rounded-2xl bg-ws-accent-200 dark:bg-ws-base-500 w-4xl max-w-11/12 shadow-2xl">
-					<div className="relative ">
+				<section className="p-6 grid place-items-center md:flex gap-6 justify-center md:justify-start items-center rounded-2xl bg-ws-accent-200 dark:bg-ws-base-500 w-11/12 max-w-4xl shadow-2xl">
+					<div className="relative grid">
 						<UserAvatar
 							size={150}
 							className={clsx(
-								"outline-4 outline-offset-4",
-								user.isVerified
+								"outline-4 outline-offset-4 size-37.5 text-3xl",
+								dbUser?.isVerified
 									? "outline-green-500"
 									: "outline-ws-primary-500"
 							)}
 						/>
-						{user.isVerified ? (
+						{dbUser?.isVerified ? (
 							<VerifiedIcon className="size-8 absolute bottom-1 right-1" />
 						) : (
 							<NotVerifiedIcons className="size-8 absolute bottom-1 right-1" />
 						)}
 					</div>
-					<div className="grid">
+					<div className="grid w-full justify-items-center md:justify-items-start">
 						<H3>{user.name || user.email}</H3>
 						<Small className="flex gap-1 items-center text-md">
 							Email :
@@ -74,10 +58,13 @@ async function page() {
 							</span>
 						</Small>
 					</div>
-					<VerifyEmailButton user={user} />
+					<VerifyEmailButton user={dbUser} />
 				</section>
 				{/* user management section */}
-				<main></main>
+				<main>
+					{/* TODO : update user section */}
+					{/* TODO : delete user button */}
+				</main>
 			</div>
 		</>
 	);

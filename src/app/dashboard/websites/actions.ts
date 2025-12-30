@@ -8,6 +8,7 @@ import z from "zod";
 
 type FormState = {
 	message: string;
+	description?: string;
 	success: boolean;
 	errors?: Record<string, string[]> | undefined;
 };
@@ -19,6 +20,12 @@ export async function addWebsite(
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
+	if (!session.user.isVerified)
+		return {
+			message: "Your email is not verified.",
+			description: "verifiy it first on profile page",
+			success: false,
+		};
 
 	const websiteSchema = z.object({
 		url: z
@@ -109,6 +116,12 @@ export async function deleteWebsite(
 ): Promise<FormState> {
 	const session = await getServerSession(authOptions);
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
+	if (!session.user.isVerified)
+		return {
+			message: "Your email is not verified.",
+			description: "verifiy it first on profile page",
+			success: false,
+		};
 
 	const deleteWebsiteSchema = z.object({
 		text: z.string().min(1, "Enter the text first"),
@@ -160,6 +173,12 @@ export async function editWebsite(
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
+	if (!session.user.isVerified)
+		return {
+			message: "Your email is not verified.",
+			description: "verifiy it first on profile page",
+			success: false,
+		};
 
 	const editWebsiteSchema = z.object({
 		name: z
