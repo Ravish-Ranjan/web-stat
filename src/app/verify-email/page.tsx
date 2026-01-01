@@ -1,14 +1,14 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import Verifier from "./Verifier";
-import { metadata } from "../layout";
-
-metadata.title = "Verify Email | WebStat"
+import { Suspense } from "react";
 
 function page() {
 	return (
 		<SessionProvider>
-			<Verifier />
+			<Suspense fallback={<div>Loading verification...</div>}>
+				<Verifier />
+			</Suspense>
 		</SessionProvider>
 	);
 }
