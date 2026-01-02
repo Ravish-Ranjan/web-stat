@@ -10,6 +10,8 @@ import { H3, Large, Small } from "@/components/Typography";
 import prisma from "@/lib/prisma";
 import VerifyEmailButton from "./VerifyEmailButton";
 import DeleteUserSection from "./DeleteUserSection";
+import ChangePasswordSection from "./ChangePasswordSection";
+import UpdateUserSection from "./UpdateUserSection";
 
 metadata.title = "Profile | WebStat";
 
@@ -72,8 +74,10 @@ async function page() {
 				)}
 				<main>
 					{/* TODO : update user section */}
+					<UpdateUserSection />
 					{/* TODO : change password button */}
-
+					<ChangePasswordSection />
+					{/* delete user button */}
 					<DeleteUserSection />
 				</main>
 			</div>
