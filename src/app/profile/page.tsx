@@ -6,9 +6,10 @@ import UserAvatar from "@/components/UserAvatar";
 import clsx from "clsx";
 import { authOptions } from "@/lib/auth";
 import { NotVerifiedIcons, VerifiedIcon } from "@/assets/avatarIcons";
-import { H3, Small } from "@/components/Typography";
+import { H3, Large, Small } from "@/components/Typography";
 import prisma from "@/lib/prisma";
 import VerifyEmailButton from "./VerifyEmailButton";
+import DeleteUserSection from "./DeleteUserSection";
 
 metadata.title = "Profile | WebStat";
 
@@ -24,14 +25,14 @@ async function page() {
 			{/* topbar */}
 			<Topbar links={[{ label: "Dashboard", path: "/dashboard" }]} />
 			{/* main page */}
-			<div className="w-full grid place-items-center">
+			<div className="w-full grid place-items-center gap-4">
 				{/* use island */}
 				<section className="p-6 grid place-items-center md:flex gap-6 justify-center md:justify-start items-center rounded-2xl bg-ws-accent-200 dark:bg-ws-base-500 w-11/12 max-w-4xl shadow-2xl">
 					<div className="relative grid">
 						<UserAvatar
 							size={150}
 							className={clsx(
-								"outline-4 outline-offset-4 size-37.5 text-3xl",
+								"outline-4 outline-offset-4 size-37.5 aspect-square text-3xl",
 								dbUser?.isVerified
 									? "outline-green-500"
 									: "outline-ws-primary-500"
@@ -43,7 +44,7 @@ async function page() {
 							<NotVerifiedIcons className="size-8 absolute bottom-1 right-1" />
 						)}
 					</div>
-					<div className="grid w-full justify-items-center md:justify-items-start">
+					<div className="grid	 justify-items-center md:justify-items-start">
 						<H3>{user.name || user.email}</H3>
 						<Small className="flex gap-1 items-center text-md">
 							Email :
@@ -58,12 +59,22 @@ async function page() {
 							</span>
 						</Small>
 					</div>
-					<VerifyEmailButton user={dbUser} />
 				</section>
 				{/* user management section */}
+				{!dbUser?.isVerified && (
+					<section className="w-11/12 max-w-4xl outline-2 outline-ws-primary-500 rounded-2xl p-4 flex items-center">
+						<Large>
+							Your email is not verified. Verify it first to use
+							our services.
+						</Large>
+						<VerifyEmailButton user={dbUser} />
+					</section>
+				)}
 				<main>
 					{/* TODO : update user section */}
-					{/* TODO : delete user button */}
+					{/* TODO : change password button */}
+
+					<DeleteUserSection />
 				</main>
 			</div>
 		</>

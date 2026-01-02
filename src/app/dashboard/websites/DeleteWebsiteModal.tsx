@@ -109,6 +109,7 @@ function DeleteWebsiteModal({
 							type="submit"
 							className="hidden"
 							aria-hidden="true"
+							disabled={isPending || text !== "delete this website"}
 						/>
 						<Label className="grid">
 							<Small className="flex gap-2">
@@ -117,7 +118,7 @@ function DeleteWebsiteModal({
 							<span>
 								Enter &quot;
 								<span className="text-red-500">
-									Delete this website
+									delete this website
 								</span>
 								&quot; below *
 							</span>
@@ -143,7 +144,7 @@ function DeleteWebsiteModal({
 					<Button
 						type="submit"
 						form="delete-website-form"
-						disabled={isPending || text !== "Delete this website"}
+						disabled={isPending || text !== "delete this website"}
 						variant={"primary"}
 						className="w-max"
 						onClick={() => formRef.current?.requestSubmit()}

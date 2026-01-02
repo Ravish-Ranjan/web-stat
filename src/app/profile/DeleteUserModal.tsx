@@ -1,5 +1,7 @@
 "use client";
+
 import { Close } from "@/assets/misc";
+import { Loader2Icon } from "@/assets/sonner";
 import ModalWrapper from "@/components/ModalWrapper";
 import Button from "@/components/ui/button";
 import {
@@ -19,36 +21,33 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { addWebsite } from "./actions";
-import { Loader2Icon } from "@/assets/sonner";
+import { deleteUser } from "./actions";
 import { toast } from "sonner";
+import { Small } from "@/components/Typography";
+
+interface DeleteUserModalProps {
+	open?: boolean;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 const initialState: {
 	message: string;
-	descriptioon?: string;
 	success: boolean;
+	description?: string;
 	errors?: Record<string, string[]> | undefined;
 } = {
 	message: "",
 	success: false,
 };
 
-interface AddWebsiteModalProps {
-	open?: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
-	const [form, setForm] = useState<{
-		url: string;
-		name?: string;
-		description?: string;
-	}>({ url: "", name: "", description: "" });
+function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
+	const [text, setText] = useState("");
+	const [hardDelete, setHardDelete] = useState(false);
+	const formRef = useRef<HTMLFormElement>(null);
 	const [state, formAction, isPending] = useActionState(
-		addWebsite,
+		deleteUser,
 		initialState
 	);
-	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		if (state.message) {
@@ -85,71 +84,56 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 		state.success,
 		state.description,
 	]);
-
 	return (
 		<ModalWrapper open={open}>
 			<Card className="w-sm sm:w-md">
 				<CardHeader className="flex justify-between items-center">
-					<CardTitle>Add new website</CardTitle>
+					<CardTitle>Delete My Account</CardTitle>
 					<Button size={"icon"} onClick={() => setOpen(false)}>
 						<Close />
 					</Button>
 				</CardHeader>
 				<CardContent>
 					<form
-						id="add-website-form"
-						action={formAction}
 						ref={formRef}
 						className="grid gap-2"
+						id="delete-user-form"
+						action={formAction}
 					>
 						<button
 							type="submit"
 							className="hidden"
-							disabled={isPending}
 							aria-hidden="true"
 						/>
-						<Label className="grid ">
-							Url *
+						<Label className="grid">
+							<Small className="flex items-center">
+								Enter &quot;
+								<span className="text-red-500">
+									delete my account
+								</span>
+								&quot; below
+							</Small>
 							<Input
+								name="text"
+								type="text"
+								value={text}
+								onChange={(e) => setText(e.target.value)}
+								placeholder="Enter text given above"
 								required
-								name="url"
-								type="url"
-								placeholder="Enter website's Url"
-								value={form.url}
 								autoComplete="off"
-								onChange={(e) => {
-									setForm({ ...form, url: e.target.value });
-								}}
 							/>
 						</Label>
-						<Label className="grid ">
-							Name
+						<Label>
 							<Input
-								name="name"
-								type="text"
-								placeholder="Enter website's name"
-								value={form.name}
-								autoComplete="off"
-								onChange={(e) => {
-									setForm({ ...form, name: e.target.value });
-								}}
+								type="checkbox"
+								name="hard-delete"
+								className="size-4 accent-ws-primary-500"
+								checked={hardDelete}
+								onChange={() => setHardDelete((prev) => !prev)}
 							/>
-						</Label>
-						<Label className="grid ">
-							Description
-							<Input
-								name="description"
-								type="text"
-								placeholder="Enter website's description"
-								value={form.description}
-								autoComplete="off"
-								onChange={(e) => {
-									setForm({
-										...form,
-										description: e.target.value,
-									});
-								}}
-							/>
+							<Small>
+								Permanently delete all data (Hard Delete)
+							</Small>
 						</Label>
 					</form>
 				</CardContent>
@@ -162,15 +146,16 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 					</Button>
 					<Button
 						type="submit"
-						form="add-website-form"
-						disabled={isPending}
+						form="delete-website-form"
+						disabled={isPending || text !== "delete my account"}
 						variant={"primary"}
+						className="w-max"
 						onClick={() => formRef.current?.requestSubmit()}
 					>
 						{isPending ? (
 							<Loader2Icon className="animate-spin" />
 						) : (
-							"Add Website"
+							"Delete Website"
 						)}
 					</Button>
 				</CardFooter>
@@ -179,4 +164,4 @@ function AddWebsiteModal({ open = false, setOpen }: AddWebsiteModalProps) {
 	);
 }
 
-export default AddWebsiteModal;
+export default DeleteUserModal;

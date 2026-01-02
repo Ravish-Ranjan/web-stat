@@ -111,11 +111,6 @@ function LoginForm({ setFormType }: LoginFormProps) {
 				</div>
 				{/* email password */}
 				<form className="grid mt-4 gap-2" id="login-form">
-					<button
-						type="submit"
-						className="hidden"
-						aria-hidden="true"
-					/>
 					<SeparatorHeading className="bg-ws-accent-500 dark:bg-ws-base-500">
 						Or Use Credentials
 					</SeparatorHeading>

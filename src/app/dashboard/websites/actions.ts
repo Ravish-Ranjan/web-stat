@@ -145,7 +145,7 @@ export async function deleteWebsite(
 
 	try {
 		const trimmedText = text.trim();
-		if (!(trimmedText === "Delete this website")) {
+		if (!(trimmedText === "delete this website")) {
 			return {
 				message: "Text doesn't match",
 				success: false,

@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			body { background-color: #0d1012; /* Matches your dashboard
+			background */ color: #fafafa; font-family: -apple-system,
+			BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0;
+			padding: 40px 0; } .container { max-width: 500px; margin: 0 auto;
+			background-color: #14171a; /* Matches your card background */
+			border: 1px solid #27272a; border-radius: 8px; padding: 32px; }
+			.logo { font-size: 24px; font-weight: bold; color: #ffffff;
+			margin-bottom: 24px; display: flex; align-items: center; }
+			.brand-icon { color: #ee8d45; /* Your orange accent color */
+			margin-right: 8px; } h1 { font-size: 20px; font-weight: 600;
+			margin-top: 0; } p { color: #a1a1aa; /* Muted text color */
+			line-height: 1.6; font-size: 15px; } .btn { display: inline-block;
+			background-color: #ee8d45; /* Your "Add Website" orange button */
+			color: #ffffff !important; padding: 12px 24px; border-radius: 6px;
+			text-decoration: none; font-weight: 600; margin: 24px 0; } .footer {
+			margin-top: 32px; padding-top: 24px; border-top: 1px solid #27272a;
+			font-size: 12px; color: #71717a; } .highlight { color: #ffffff; } a{
+			color: #00a2ff; }
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="logo">
+				<span
+					class="brand-icon"
+					style="
+						outline: 2px solid white;
+						border-radius: 100vw;
+						outline-offset: 2px;
+					"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						viewBox="0 0 24 24"
+						xmlns:bx="https://boxy-svg.com"
+					>
+						<defs>
+							<bx:export>
+								<bx:file format="svg" />
+							</bx:export>
+						</defs>
+						<ellipse
+							style="
+								stroke-width: 0px;
+								paint-order: fill;
+								stroke: rgb(0, 0, 0);
+							"
+							cx="12"
+							cy="11.953"
+							rx="11.906"
+							ry="11.906"
+						/>
+						<g
+							fill="none"
+							stroke="#888888"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							transform="matrix(0.8, 0, 0, 0.8, 2.4, 2.35)"
+						>
+							<path
+								d="M17 19a1 1 0 0 1-1-1v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a1 1 0 0 1-1 1zm0 2v-2"
+								style="stroke: rgb(255, 255, 255)"
+							/>
+							<path
+								d="M19 14V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V10m16 11v-2M3 5V3"
+								style="stroke: rgb(255, 255, 255)"
+							/>
+							<path
+								d="M4 10a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2zm3-5V3"
+								style="stroke: rgb(255, 255, 255)"
+							/>
+						</g>
+					</svg>
+				</span>
+				WebStat
+			</div>
+
+			<p>Hi <span class="highlight">{{name}}</span>,</p>
+			<p>
+				We noticed you just logged back in. Welcome back to WebStat!
+				We've successfully reactivated your account. All your previous
+				settings and dashboard preferences have been restored. If you
+				chose the "soft-delete" option, your monitored websites and
+				historical data are exactly where you left them.
+			</p>
+
+			<div class="footer">
+				Sent on
+				{{date}}<br />
+
+			</div>
+		</div>
+	</body>
+</html>

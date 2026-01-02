@@ -111,6 +111,7 @@ function EditWebsiteModal({
 							type="submit"
 							className="hidden"
 							aria-hidden="true"
+							disabled={isPending}
 						/>
 						<Label className="grid ">
 							Name

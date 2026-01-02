@@ -31,7 +31,6 @@ class Mailer {
 	async verifyEmail(
 		to: string,
 		name: string,
-		email: string,
 		verificationUrl: string
 	) {
 		try {
@@ -45,9 +44,9 @@ class Mailer {
 
 			const parsedHtml = template({
 				name,
-				email,
+				to,
 				verificationUrl,
-				date: new Date().toLocaleDateString(),
+				date: new Date().toLocaleString(),
 			});
 
 			const info = await this.transporter.sendMail({
@@ -64,5 +63,35 @@ class Mailer {
 			throw error; // Re-throw so the API knows it failed
 		}
 	}
+	async welcomeBack(to: string, name: string) {
+		try {
+			const templatePath = path.join(
+				process.cwd(),
+				"emails",
+				"welcome-back.handlebars"
+			);
+			const templateSource = fs.readFileSync(templatePath, "utf8");
+			const template = handlebars.compile(templateSource);
+
+			const parsedHtml = template({
+				name,
+				date: new Date().toLocaleString(),
+			});
+
+			const info = await this.transporter.sendMail({
+				from: `"WebStat" <${process.env.EMAIL_USER}>`,
+				to,
+				subject:
+					"WebStat : Welcome back! Your monitoring is back online",
+				html: parsedHtml,
+			});
+
+			console.log("Email sent: ", info.messageId);
+			return info;
+		} catch (error) {
+			console.error("Nodemailer Error: ", error);
+			throw error; // Re-throw so the API knows it failed
+		}
+	}
 }
-export default Mailer
+export default Mailer;

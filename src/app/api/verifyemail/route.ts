@@ -50,12 +50,14 @@ export async function POST(request: Request) {
 		await mailer.verifyEmail(
 			existingUser.email,
 			existingUser.name || existingUser.email,
-			existingUser.email,
 			verificationUrl
 		);
 
 		return NextResponse.json(
-			{ message: "Email sent successfully." ,description:"Verification mail sent to your email-id"},
+			{
+				message: "Email sent successfully.",
+				description: "Verification mail sent to your email-id",
+			},
 			{ status: 200 }
 		);
 	} catch (error) {
@@ -112,7 +114,7 @@ export async function PATCH(request: Request) {
 				where: { identifier_token: { identifier: email, token } },
 			}),
 		]);
-		revalidatePath("/profile")
+		revalidatePath("/profile");
 		return NextResponse.json(
 			{ message: "Email verified successfuly" },
 			{ status: 200 }

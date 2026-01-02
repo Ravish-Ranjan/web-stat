@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import type { DefaultSession } from "next-auth";
 import bcryptjs from "bcryptjs";
+import Mailer from "./mailer";
 
 declare module "next-auth" {
 	interface Session {
@@ -40,25 +41,25 @@ export const authOptions: NextAuthOptions = {
 					where: { email: credentials.email },
 				});
 
-				if (!user) {
-					throw new Error("No user found with this email");
-				}
-
-				if (user.deleted) {
-					throw new Error("Account has been deleted");
-				}
-
+				if (!user) throw new Error("No user found with this email");
 				if (!user.password) {
 					throw new Error("Please sign in with OAuth provider");
 				}
-
 				const isPasswordValid = await bcryptjs.compare(
 					credentials.password,
 					user.password
 				);
-
-				if (!isPasswordValid) {
-					throw new Error("Invalid password");
+				if (!isPasswordValid) throw new Error("Invalid password");
+				if (user.deleted) {
+					await prisma.user.update({
+						where: { id: user.id },
+						data: { deleted: false, deletedOn: null },
+					});
+					const mailer = new Mailer();
+					await mailer.welcomeBack(
+						user.email,
+						user.name || user.email
+					);
 				}
 
 				return {
@@ -81,13 +82,23 @@ export const authOptions: NextAuthOptions = {
 				});
 
 				if (existingUser) {
-					if (existingUser.deleted) return false;
+					const isReactivating = existingUser.deleted;
+					if (isReactivating) {
+						const mailer = new Mailer();
+						await mailer.welcomeBack(
+							existingUser.email,
+							existingUser.name || existingUser.email
+						);
+					}
 
 					await prisma.user.update({
 						where: { email: user.email },
 						data: {
 							name: user.name || existingUser.name,
 							avatar: user.image || existingUser.avatar,
+							deleted: false,
+							deletedOn: null,
+							isVerified: true,
 						},
 					});
 					return true;
