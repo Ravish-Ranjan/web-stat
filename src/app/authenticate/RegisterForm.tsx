@@ -31,7 +31,7 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 		password: "",
 		confirmPassword: "",
 	});
-	const [visi, setVisi] = useState(false);
+	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [isRegistering, setisRegistering] = useState(false);
 
 	const handleCredRegister = async (e: React.FormEvent) => {
@@ -186,7 +186,7 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 						Password *
 						<div className="flex gap-1">
 							<Input
-								type={visi ? "text" : "password"}
+								type={passwordVisible ? "text" : "password"}
 								required
 								placeholder="Enter your password"
 								value={form.password}
@@ -202,10 +202,10 @@ function RegisterForm({ setFormType }: RegisterFormProps) {
 							/>
 							<Button
 								variant={"outline"}
-								onClick={() => setVisi((state) => !state)}
+								onClick={() => setPasswordVisible((state) => !state)}
 								type="button"
 							>
-								{visi ? <Eye /> : <EyeClosed />}
+								{passwordVisible ? <Eye /> : <EyeClosed />}
 							</Button>
 						</div>
 					</Label>

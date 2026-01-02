@@ -1,22 +1,23 @@
 "use client";
 
 import Button from "@/components/ui/button";
-import UpdateUserModal from "./UpdateUserModal";
 import { useState } from "react";
+import UpdateNameModal from "./UpdateNameModal";
 
-function UpdateUserSection() {
+function UpdateNameSection({ name }: { name?: string | null }) {
 	const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
 	return (
 		<>
 			<Button onClick={() => setOpenDeleteUserModal(true)}>
-				Update My Information
+				Update Name
 			</Button>
-			<UpdateUserModal
+			<UpdateNameModal
 				setOpen={setOpenDeleteUserModal}
 				open={openDeleteUserModal}
+				name={name}
 			/>
 		</>
 	);
 }
 
-export default UpdateUserSection;
+export default UpdateNameSection;

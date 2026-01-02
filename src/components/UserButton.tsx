@@ -14,6 +14,7 @@ import SignOutButton from "./SignOutButton";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { DashboardIcon, ProfileIcon } from "@/assets/misc";
 import clsx from "clsx";
+import prisma from "@/lib/prisma";
 
 async function UserButton({
 	className,
@@ -49,6 +50,9 @@ async function UserButton({
 		if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`;
 		return "U";
 	};
+	const dbUser = await prisma.user.findFirst({
+		where: { id: sesssion.user.id },
+	});
 
 	return (
 		<DropdownMenu>
@@ -69,21 +73,21 @@ async function UserButton({
 						<Avatar className={clsx("size-7", avatarClass)}>
 							<AvatarFallback className="bg-ws-secondary-400 dark:bg-ws-secondary-600 text-white">
 								{getAvatarName(
-									sesssion.user.name
-										? sesssion.user.name
-										: sesssion.user.email || ""
+									dbUser?.name
+										? dbUser?.name
+										: dbUser?.email || ""
 								)}
 							</AvatarFallback>
 						</Avatar>
 					)}
 					<Small className={clsx(textClass)}>
-						{sesssion.user.name
-							? sesssion.user.name
+						{dbUser?.name
+							? dbUser?.name
 									?.split(" ")
 									.splice(0, 2)
 									.join(" ")
-							: sesssion.user.email?.substring(0, 15) +
-							  ((sesssion.user.email?.length ?? 0) > 15
+							: dbUser?.email.substring(0, 15) +
+							  ((dbUser?.email.length ?? 0) > 15
 									? "..."
 									: "")}
 					</Small>

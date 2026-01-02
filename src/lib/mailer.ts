@@ -28,11 +28,7 @@ class Mailer {
 		});
 	}
 
-	async verifyEmail(
-		to: string,
-		name: string,
-		verificationUrl: string
-	) {
+	async verifyEmail(to: string, name: string, verificationUrl: string) {
 		try {
 			const templatePath = path.join(
 				process.cwd(),
@@ -44,7 +40,7 @@ class Mailer {
 
 			const parsedHtml = template({
 				name,
-				to,
+				email: to,
 				verificationUrl,
 				date: new Date().toLocaleString(),
 			});
@@ -83,6 +79,37 @@ class Mailer {
 				to,
 				subject:
 					"WebStat : Welcome back! Your monitoring is back online",
+				html: parsedHtml,
+			});
+
+			console.log("Email sent: ", info.messageId);
+			return info;
+		} catch (error) {
+			console.error("Nodemailer Error: ", error);
+			throw error; // Re-throw so the API knows it failed
+		}
+	}
+	async passwordChanged(to: string, name: string) {
+		try {
+			const templatePath = path.join(
+				process.cwd(),
+				"emails",
+				"password-changed.handlebars"
+			);
+			const templateSource = fs.readFileSync(templatePath, "utf8");
+			const template = handlebars.compile(templateSource);
+
+			const parsedHtml = template({
+				name,
+				email:to,
+				date: new Date().toLocaleString(),
+			});
+
+			const info = await this.transporter.sendMail({
+				from: `"WebStat" <${process.env.EMAIL_USER}>`,
+				to,
+				subject:
+					"WebStat : Security Alert - Your WebStat password has been changed",
 				html: parsedHtml,
 			});
 

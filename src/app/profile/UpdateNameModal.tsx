@@ -21,14 +21,8 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { deleteUser } from "./actions";
+import { updateName } from "./actions";
 import { toast } from "sonner";
-import { Small } from "@/components/Typography";
-
-interface DeleteUserModalProps {
-	open?: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
-}
 
 const initialState: {
 	message: string;
@@ -40,12 +34,21 @@ const initialState: {
 	success: false,
 };
 
-function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
-	const [text, setText] = useState("");
-	const [hardDelete, setHardDelete] = useState(false);
+interface UpdateNameModalProps {
+	open?: boolean;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+	oldName?: string | null;
+}
+
+function UpdateNameModal({
+	open = false,
+	setOpen,
+	oldName,
+}: UpdateNameModalProps) {
+	const [name, setName] = useState(oldName || "");
 	const formRef = useRef<HTMLFormElement>(null);
 	const [state, formAction, isPending] = useActionState(
-		deleteUser,
+		updateName,
 		initialState
 	);
 
@@ -88,53 +91,28 @@ function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
 		<ModalWrapper open={open}>
 			<Card className="w-sm sm:w-md">
 				<CardHeader className="flex justify-between items-center">
-					<CardTitle>Delete My Account</CardTitle>
+					<CardTitle>Update name</CardTitle>
 					<Button size={"icon"} onClick={() => setOpen(false)}>
 						<Close />
 					</Button>
 				</CardHeader>
 				<CardContent>
 					<form
-						ref={formRef}
-						className="grid gap-2"
-						id="delete-user-form"
+						id="update-name-form"
 						action={formAction}
+						ref={formRef}
+						className="grid"
 					>
-						<button
-							type="submit"
-							className="hidden"
-							aria-hidden="true"
-							disabled={isPending || text !== "delete my account"}
-						/>
 						<Label className="grid">
-							<Small className="flex items-center">
-								Enter &quot;
-								<span className="text-red-500">
-									delete my account
-								</span>
-								&quot; below
-							</Small>
+							Name
 							<Input
-								name="text"
+								name="name"
 								type="text"
-								value={text}
-								onChange={(e) => setText(e.target.value)}
-								placeholder="Enter text given above"
-								required
+								placeholder="Change your name"
 								autoComplete="off"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
 							/>
-						</Label>
-						<Label>
-							<Input
-								type="checkbox"
-								name="hard-delete"
-								className="size-4 accent-ws-primary-500"
-								checked={hardDelete}
-								onChange={() => setHardDelete((prev) => !prev)}
-							/>
-							<Small>
-								Permanently delete all data (Hard Delete)
-							</Small>
 						</Label>
 					</form>
 				</CardContent>
@@ -147,8 +125,8 @@ function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
 					</Button>
 					<Button
 						type="submit"
-						form="delete-website-form"
-						disabled={isPending || text !== "delete my account"}
+						form="update-name-form"
+						disabled={isPending}
 						variant={"primary"}
 						className="w-max"
 						onClick={() => formRef.current?.requestSubmit()}
@@ -156,7 +134,7 @@ function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
 						{isPending ? (
 							<Loader2Icon className="animate-spin" />
 						) : (
-							"Delete Account"
+							"Update Name"
 						)}
 					</Button>
 				</CardFooter>
@@ -165,4 +143,4 @@ function DeleteUserModal({ open = false, setOpen }: DeleteUserModalProps) {
 	);
 }
 
-export default DeleteUserModal;
+export default UpdateNameModal;

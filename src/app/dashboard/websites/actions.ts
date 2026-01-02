@@ -20,7 +20,10 @@ export async function addWebsite(
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
-	if (!session.user.isVerified)
+	const dbUser = await prisma.user.findFirst({
+		where: { id: session.user.id },
+	});
+	if (!dbUser?.isVerified)
 		return {
 			message: "Your email is not verified.",
 			description: "verifiy it first on profile page",
@@ -116,7 +119,10 @@ export async function deleteWebsite(
 ): Promise<FormState> {
 	const session = await getServerSession(authOptions);
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
-	if (!session.user.isVerified)
+	const dbUser = await prisma.user.findFirst({
+		where: { id: session.user.id },
+	});
+	if (!dbUser?.isVerified)
 		return {
 			message: "Your email is not verified.",
 			description: "verifiy it first on profile page",
@@ -173,7 +179,10 @@ export async function editWebsite(
 	const session = await getServerSession(authOptions);
 
 	if (!session?.user.id) return { message: "Unauthorized", success: false };
-	if (!session.user.isVerified)
+	const dbUser = await prisma.user.findFirst({
+		where: { id: session.user.id },
+	});
+	if (!dbUser?.isVerified)
 		return {
 			message: "Your email is not verified.",
 			description: "verifiy it first on profile page",

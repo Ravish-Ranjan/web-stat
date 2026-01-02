@@ -28,7 +28,7 @@ function LoginForm({ setFormType }: LoginFormProps) {
 		email: "",
 		password: "",
 	});
-	const [visi, setVisi] = useState(false);
+	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [isLoggingIn, setIsLoggingIn] = useState(false);
 	const router = useRouter();
 
@@ -133,7 +133,7 @@ function LoginForm({ setFormType }: LoginFormProps) {
 						Password *
 						<div className="flex gap-1">
 							<Input
-								type={visi ? "text" : "password"}
+								type={passwordVisible ? "text" : "password"}
 								required
 								placeholder="Enter your password"
 								value={form.password}
@@ -149,10 +149,10 @@ function LoginForm({ setFormType }: LoginFormProps) {
 							/>
 							<Button
 								variant={"outline"}
-								onClick={() => setVisi((state) => !state)}
+								onClick={() => setPasswordVisible((state) => !state)}
 								type="button"
 							>
-								{visi ? <Eye /> : <EyeClosed />}
+								{passwordVisible ? <Eye /> : <EyeClosed />}
 							</Button>
 						</div>
 					</Label>

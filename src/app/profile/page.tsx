@@ -11,7 +11,7 @@ import prisma from "@/lib/prisma";
 import VerifyEmailButton from "./VerifyEmailButton";
 import DeleteUserSection from "./DeleteUserSection";
 import ChangePasswordSection from "./ChangePasswordSection";
-import UpdateUserSection from "./UpdateUserSection";
+import UpdateNameSection from "./UpdateNameSection";
 
 metadata.title = "Profile | WebStat";
 
@@ -47,7 +47,7 @@ async function page() {
 						)}
 					</div>
 					<div className="grid	 justify-items-center md:justify-items-start">
-						<H3>{user.name || user.email}</H3>
+						<H3>{dbUser?.name || user.email}</H3>
 						<Small className="flex gap-1 items-center text-md">
 							Email :
 							<span className="px-0.5 text-gray-700 dark:text-gray-400">
@@ -74,7 +74,7 @@ async function page() {
 				)}
 				<main>
 					{/* TODO : update user section */}
-					<UpdateUserSection />
+					<UpdateNameSection name={dbUser?.name} />
 					{/* TODO : change password button */}
 					<ChangePasswordSection />
 					{/* delete user button */}
