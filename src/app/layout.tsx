@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body>
+			<body className="min-h-dvh">
 				<ThemeProvider>
 					<div className="bg-ws-accent-500 dark:bg-ws-base-700 min-h-dvh w-full">
 						{children}

@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Topbar from "@/components/Topbar";
 
 function Page() {
@@ -6,9 +7,11 @@ function Page() {
 			<Topbar
 				links={[
 					{ label: "Dashboard", path: "/dashboard" },
-					{ label: "Profile",path:"/profile" },
+					{ label: "Profile", path: "/profile" },
 				]}
 			/>
+			<main></main>
+			<Footer />
 		</>
 	);
 }
