@@ -90,9 +90,7 @@ async function page() {
 							{/* update user section */}
 							<UpdateNameSection name={dbUser?.name} />
 							{/* change password button */}
-							{dbUser?.password && (
-								<ChangePasswordSection />
-							)}
+							{dbUser?.password && <ChangePasswordSection />}
 							{/* delete user button */}
 							<DeleteUserSection />
 						</CardContent>

@@ -16,11 +16,14 @@ export async function POST(request: Request) {
 
 		const validation = registerSchema.safeParse(body);
 		if (!validation.success) {
-			return {
-				message: "Validation failed",
-				success: false,
-				errors: validation.error.flatten().fieldErrors,
-			};
+			return NextResponse.json(
+				{
+					error: `Validation failed, ${
+						validation.error.flatten().fieldErrors
+					}`,
+				},
+				{ status: 400 }
+			);
 		}
 		const { email, password, name } = validation.data;
 

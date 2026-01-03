@@ -14,7 +14,7 @@ function UpdateNameSection({ name }: { name?: string | null }) {
 			<UpdateNameModal
 				setOpen={setOpenDeleteUserModal}
 				open={openDeleteUserModal}
-				name={name}
+				oldName={name}
 			/>
 		</>
 	);
