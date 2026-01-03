@@ -80,7 +80,7 @@ async function UserButton({
 							</AvatarFallback>
 						</Avatar>
 					)}
-					<Small className={clsx(textClass)}>
+					<Small className={clsx("hidden sm:flex",textClass)}>
 						{dbUser?.name
 							? dbUser?.name
 									?.split(" ")

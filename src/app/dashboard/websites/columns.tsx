@@ -63,7 +63,7 @@ export const columns: ColumnDef<WebsiteType>[] = [
 		),
 		cell: ({ row }) => {
 			return (
-				row.getValue("description") || (
+				row.original.description|| (
 					<Muted className="text-xs">NA</Muted>
 				)
 			);
@@ -84,7 +84,7 @@ export const columns: ColumnDef<WebsiteType>[] = [
 		accessorKey: "createdAt",
 		header: () => <SortableHeader column="createdAt" label="Added On" />,
 		cell: ({ row }) => {
-			return new Date(row.getValue("createdAt")).toLocaleDateString();
+			return new Date(row.getValue("createdAt")).toDateString();
 		},
 	},
 	{

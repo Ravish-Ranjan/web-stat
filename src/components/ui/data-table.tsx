@@ -15,7 +15,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Muted } from "../Typography";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -33,7 +32,7 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className="overflow-hidden rounded-md border">
+		<div className="overflow-hidden rounded-md border min-h-70">
 			<Table>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (
