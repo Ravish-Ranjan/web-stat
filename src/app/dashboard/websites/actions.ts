@@ -102,7 +102,8 @@ export async function addWebsite(
 				userId: session.user.id,
 			},
 		});
-		revalidatePath("/dashboard/websites");
+		revalidatePath("/dashboard");
+		// revalidatePath("/dashboard/websites");
 		return { message: "Website added successfully!", success: true };
 	} catch {
 		return {
