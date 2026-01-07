@@ -1,5 +1,4 @@
 "use client";
-// import { PolarRadiusAxis, RadialBarChart, Label, RadialBar } from "recharts";
 import {
 	Label,
 	LabelList,
@@ -8,7 +7,7 @@ import {
 	RadialBarChart,
 } from "recharts";
 import {
-	ChartConfig,
+	type ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
@@ -35,8 +34,8 @@ function HalfRadialChart({
 			<RadialBarChart
 				data={chartData}
 				endAngle={180}
-				innerRadius={80}
-				outerRadius={130}
+				innerRadius={90}
+				outerRadius={150}
 			>
 				<ChartTooltip
 					cursor={false}
@@ -73,7 +72,6 @@ function HalfRadialChart({
 					/>
 				</PolarRadiusAxis>
 				{Object.keys(chartConfig).map((key: string, i) => {
-					console.log(key);
 					return (
 						<RadialBar
 							key={i}
@@ -86,7 +84,7 @@ function HalfRadialChart({
 							<LabelList
 								position="insideStart"
 								className="fill-white dark:fill-black font-semibold capitalize mix-blend-luminosity"
-								fontSize={11}
+								fontSize={12}
 							>
 								{key}
 							</LabelList>

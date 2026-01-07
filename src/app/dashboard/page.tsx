@@ -1,4 +1,4 @@
-import { H4 } from "@/components/Typography";
+import { H4, Large, Small } from "@/components/Typography";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -6,6 +6,7 @@ import AddWebsiteSection from "./websites/AddWebsiteSection";
 import { ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HalfRadialChart from "@/components/ui/half-radial-chart";
+import RadialMeterChart from "@/components/ui/radial-meter-chart";
 
 async function page() {
 	const session = await getServerSession(authOptions);
@@ -28,6 +29,23 @@ async function page() {
 		else downCount++;
 	}
 
+	const [summary] = await prisma.$queryRaw<
+		{
+			overall_uptime: number | null;
+			overall_response: number | null;
+			total_checks: number | null;
+		}[]
+	>`
+    SELECT
+      SUM(ds."uptimePercent" * ds."totalChecks") / NULLIF(SUM(ds."totalChecks"), 0) AS overall_uptime,
+      SUM(ds."avgResponse" * ds."totalChecks") / NULLIF(SUM(ds."totalChecks"), 0) AS overall_response,
+      SUM(ds."totalChecks") AS total_checks
+    FROM "DailySummary" ds
+    JOIN "Website" w ON w.id = ds."websiteId"
+    WHERE w."userId" = ${session?.user.id}
+      AND ds.date >= NOW() - INTERVAL '7 days'
+  `;
+
 	return (
 		<div className="grid p-4 gap-2">
 			<div className="outline-1 p-1 px-2 md:p-2 md:px-4 rounded-lg flex justify-between items-center bg-ws-accent-200 dark:bg-ws-base-600">
@@ -35,22 +53,26 @@ async function page() {
 				<AddWebsiteSection />
 			</div>
 			{/* total sites */}
-			<main className="grid grid-cols-1 md:grid-cols-3">
-				<Card className="">
+			<main className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+				{/* up/down sites */}
+				<Card>
 					<CardHeader>
 						<CardTitle>Websites&apos; Status</CardTitle>
+						<Small className="text-gray-500">
+							Currently Up/Down websites&apos; count
+						</Small>
 					</CardHeader>
-					<CardContent>
+					<CardContent className="flex-1 pb-0">
 						<HalfRadialChart
 							chartConfig={
 								{
 									up: {
 										label: "Up",
-										color: "var(--color-green-500)",
+										color: "var(--chart-2)",
 									},
 									down: {
 										label: "Down",
-										color: "var(--color-ws-primary-500)",
+										color: "var(--chart-3)",
 									},
 								} satisfies ChartConfig
 							}
@@ -60,9 +82,58 @@ async function page() {
 						/>
 					</CardContent>
 				</Card>
-
-				{/* no. of sites up or down */}
-				{/* avg response time */}
+				{/* Overall Stats */}
+				<Card className="col-span-1 lg:col-span-2">
+					<CardHeader>
+						<CardTitle>Overall Statistics</CardTitle>
+						<Small className="text-gray-500">
+							Over the duration of last 7-days
+						</Small>
+					</CardHeader>
+					<CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1 pb-0">
+						<div>
+							<RadialMeterChart
+								chartConfig={
+									{
+										percentage: {
+											label: "Percentage",
+											color: "var(--chart-4)",
+										},
+									} satisfies ChartConfig
+								}
+								chartData={[
+									{
+										percentage: Number(
+											summary.overall_uptime
+										),
+										fill: "var(--color-percentage)",
+									},
+								]}
+								dataCount={
+									Number(summary.overall_uptime).toString() +
+									"%"
+								}
+								dataLabel="Overall Uptime"
+							/>
+						</div>
+						<div className="flex flex-col justify-center items-start">
+							{/* avg response time */}
+							<Large className="flex gap-1 items-center text-sm md:text-lg">
+								Overall Avg. Response Time :
+								<span className="px-0.5 text-gray-700 dark:text-gray-400">
+									{Number(summary.overall_response)}
+								</span>
+							</Large>
+							{/* total checks */}
+							<Large className="flex gap-1 items-center text-sm md:text-lg">
+								Total Checks :
+								<span className="px-0.5 text-gray-700 dark:text-gray-400">
+									{Number(summary.total_checks)} times
+								</span>
+							</Large>
+						</div>
+					</CardContent>
+				</Card>
 			</main>
 		</div>
 	);

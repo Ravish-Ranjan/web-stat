@@ -1,51 +1,46 @@
-"use client";
-
-import * as React from "react";
-import { Label, Pie, PieChart } from "recharts";
-
+"use client"
 import {
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-	type ChartConfig,
-} from "@/components/ui/chart";
+	Label,
+	PolarGrid,
+	PolarRadiusAxis,
+	RadialBar,
+	RadialBarChart,
+} from "recharts";
+import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 
-export const description = "A donut chart with text";
-
-interface PieChartDonutProps {
+interface RadialMeterChartProps {
 	chartConfig: ChartConfig;
 	chartData: Array<Record<string, string | number>>;
-	dataCount?: number;
+	dataCount?: number | string;
 	dataLabel?: string;
-	dataKey: string;
-	nameKey: string;
 }
 
-export function PieChartDonut({
+function RadialMeterChart({
 	chartConfig,
 	chartData,
 	dataCount,
 	dataLabel,
-	dataKey,
-	nameKey,
-}: PieChartDonutProps) {
+}: RadialMeterChartProps) {
 	return (
 		<ChartContainer
 			config={chartConfig}
 			className="mx-auto aspect-square max-h-62.5"
 		>
-			<PieChart>
-				<ChartTooltip
-					cursor={false}
-					content={<ChartTooltipContent hideLabel />}
+			<RadialBarChart
+				data={chartData}
+				endAngle={360*Number(chartData[0].percentage)/100}
+				innerRadius={80}
+				outerRadius={140}
+			>
+				<PolarGrid
+					gridType="circle"
+					radialLines={false}
+					stroke="none"
+					className="first:fill-ws-base-400 last:fill-ws-base-700"
+					polarRadius={[86, 74]}
 				/>
-				<Pie
-					data={chartData}
-					dataKey={dataKey}
-					nameKey={nameKey}
-					innerRadius={60}
-					strokeWidth={5}
-				>
+				<RadialBar dataKey="percentage" background />
+				<PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
 					<Label
 						content={({ viewBox }) => {
 							if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -59,7 +54,7 @@ export function PieChartDonut({
 										<tspan
 											x={viewBox.cx}
 											y={viewBox.cy}
-											className="fill-foreground text-3xl font-bold"
+											className="fill-foreground text-4xl font-bold"
 										>
 											{dataCount}
 										</tspan>
@@ -75,8 +70,10 @@ export function PieChartDonut({
 							}
 						}}
 					/>
-				</Pie>
-			</PieChart>
+				</PolarRadiusAxis>
+			</RadialBarChart>
 		</ChartContainer>
 	);
 }
+
+export default RadialMeterChart;
