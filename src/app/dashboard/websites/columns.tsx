@@ -4,7 +4,7 @@ import { ArrowUpDownIcon } from "@/assets/misc";
 import { Muted } from "@/components/Typography";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import WebsiteActionCell from "./WebsiteActionCell";
+import WebsiteActionCell from "@/app/dashboard/websites/WebsiteActionCell";
 // import { useRouter } from "next/router";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/ui/button";

@@ -21,7 +21,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { updateName } from "./actions";
+import { updateName } from "@/app/profile/actions";
 import { toast } from "sonner";
 
 const initialState: {

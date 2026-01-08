@@ -2,7 +2,7 @@ import { H4, Large, Small } from "@/components/Typography";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import AddWebsiteSection from "./websites/AddWebsiteSection";
+import AddWebsiteSection from "@/app/dashboard/websites/AddWebsiteSection";
 import { ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HalfRadialChart from "@/components/ui/half-radial-chart";
@@ -97,7 +97,7 @@ async function page() {
 									{
 										percentage: {
 											label: "Percentage",
-											color: "var(--chart-4)",
+											color: "var(--chart-2)",
 										},
 									} satisfies ChartConfig
 								}

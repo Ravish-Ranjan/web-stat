@@ -3,7 +3,7 @@ import { H4 } from "@/components/Typography";
 import Button from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import { getServerSession } from "next-auth";
-import UserButton from "./UserButton";
+import UserButton from "@/components/UserButton";
 import {} from "next/navigation";
 import { ReactNode } from "react";
 import {
@@ -11,7 +11,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { HamburgerIcon } from "@/assets/misc";
 
 interface TopbarProps {

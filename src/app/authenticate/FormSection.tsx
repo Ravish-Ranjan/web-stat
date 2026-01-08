@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
+import LoginForm from "@/app/authenticate/LoginForm";
+import RegisterForm from "@/app/authenticate/RegisterForm";
 
 function FormSection() {
 	const [formType, setFormType] = useState<"login" | "register">("login");

@@ -21,7 +21,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { deleteUser } from "./actions";
+import { deleteUser } from "@/app/profile/actions";
 import { toast } from "sonner";
 import { Small } from "@/components/Typography";
 

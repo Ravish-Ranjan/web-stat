@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import { useState } from "react";
-import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePasswordModal from "@/app/profile/ChangePasswordModal";
 
 function ChangePasswordSection() {
 	const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);

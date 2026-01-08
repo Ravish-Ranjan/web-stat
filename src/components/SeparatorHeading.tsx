@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Separator } from "@/components/ui/separator";
-import { Small } from "./Typography";
+import { Small } from "@/components/Typography";
 import clsx from "clsx";
 
 interface SeparatorHeadingProps {

@@ -23,7 +23,7 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
-import { changePassword } from "./actions";
+import { changePassword } from "@/app/profile/actions";
 
 interface ChangePasswordModalProps {
 	open?: boolean;

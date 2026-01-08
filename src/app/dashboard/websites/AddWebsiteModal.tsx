@@ -19,7 +19,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { addWebsite } from "./actions";
+import { addWebsite } from "@/app/dashboard/websites/actions";
 import { Loader2Icon } from "@/assets/sonner";
 import { toast } from "sonner";
 

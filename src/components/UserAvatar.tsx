@@ -3,7 +3,7 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import clsx from "clsx";
 
 const getAvatarName = (name: string) => {

@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import { useState } from "react";
-import UpdateNameModal from "./UpdateNameModal";
+import UpdateNameModal from "@/app/profile/UpdateNameModal";
 
 function UpdateNameSection({ name }: { name?: string | null }) {
 	const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);

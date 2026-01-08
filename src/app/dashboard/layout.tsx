@@ -21,7 +21,7 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { metadata } from "../layout";
+import { metadata } from "@/app/layout";
 
 metadata.title = "Dashboard | WebStats"
 

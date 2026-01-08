@@ -1,8 +1,8 @@
 import Topbar from "@/components/Topbar";
-import FormSection from "./FormSection";
+import FormSection from "@/app/authenticate/FormSection";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { metadata } from "../layout";
+import { metadata } from "@/app/layout";
 
 metadata.title = "Authenticate | WebStat"
 

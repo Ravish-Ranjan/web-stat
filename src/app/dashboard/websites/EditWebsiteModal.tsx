@@ -18,7 +18,7 @@ import {
 	useEffect,
 	useRef,
 } from "react";
-import { editWebsite } from "./actions";
+import { editWebsite } from "@/app/dashboard/websites/actions";
 import { Loader2Icon } from "@/assets/sonner";
 import { toast } from "sonner";
 import StyledUrl from "@/components/StyledUrl";

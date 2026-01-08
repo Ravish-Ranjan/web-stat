@@ -1,17 +1,17 @@
 import Topbar from "@/components/Topbar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { metadata } from "../layout";
+import { metadata } from "@/app/layout";
 import UserAvatar from "@/components/UserAvatar";
 import clsx from "clsx";
 import { authOptions } from "@/lib/auth";
 import { NotVerifiedIcons, VerifiedIcon } from "@/assets/avatarIcons";
 import { H3, Large, Small } from "@/components/Typography";
 import prisma from "@/lib/prisma";
-import VerifyEmailButton from "./VerifyEmailButton";
-import DeleteUserSection from "./DeleteUserSection";
-import ChangePasswordSection from "./ChangePasswordSection";
-import UpdateNameSection from "./UpdateNameSection";
+import VerifyEmailButton from "@/app/profile/VerifyEmailButton";
+import DeleteUserSection from "@/app/profile/DeleteUserSection";
+import ChangePasswordSection from "@/app/profile/ChangePasswordSection";
+import UpdateNameSection from "@/app/profile/UpdateNameSection";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProfileIcon } from "@/assets/misc";
 

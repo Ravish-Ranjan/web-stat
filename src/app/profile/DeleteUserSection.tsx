@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/button";
 import { useState } from "react";
-import DeleteUserModal from "./DeleteUserModal";
+import DeleteUserModal from "@/app/profile/DeleteUserModal";
 
 function DeleteUserSection() {
 	const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);

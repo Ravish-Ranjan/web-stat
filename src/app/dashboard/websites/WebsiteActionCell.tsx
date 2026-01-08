@@ -6,11 +6,11 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DeleteWebsiteModal from "./DeleteWebsiteModal";
+import DeleteWebsiteModal from "@/app/dashboard/websites/DeleteWebsiteModal";
 import Button from "@/components/ui/button";
 import { SettingsIcon } from "@/assets/misc";
 import { useState } from "react";
-import EditWebsiteModal from "./EditWebsiteModal";
+import EditWebsiteModal from "@/app/dashboard/websites/EditWebsiteModal";
 
 function WebsiteActionCell({ websiteData }: { websiteData: WebsiteType }) {
 	const [openDeleteWebsiteModal, setOpenDeleteWebsiteModal] = useState(false);

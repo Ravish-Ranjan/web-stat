@@ -3,7 +3,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { columns } from "./columns";
+import { columns } from "@/app/dashboard/websites/columns";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 

@@ -1,6 +1,6 @@
 import { H4 } from "@/components/Typography";
-import AddWebsiteSection from "./AddWebsiteSection";
-import WebsiteTable from "./WebsiteTable";
+import AddWebsiteSection from "@/app/dashboard/websites/AddWebsiteSection";
+import WebsiteTable from "@/app/dashboard/websites/WebsiteTable";
 import { Suspense } from "react";
 import { TableSkeleton } from "@/components/TableSkeleton";
 import { SearchInput } from "@/components/SearchInput";

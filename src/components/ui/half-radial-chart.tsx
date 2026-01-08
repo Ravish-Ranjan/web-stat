@@ -11,7 +11,7 @@ import {
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "./chart";
+} from "@/components/chart";
 
 interface HalfRadialChartProps {
 	chartConfig: ChartConfig;

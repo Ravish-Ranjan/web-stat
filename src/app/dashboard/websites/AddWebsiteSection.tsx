@@ -2,7 +2,7 @@
 
 import ModalOpenerButton from "@/components/ModalOpenerButton";
 import { useState } from "react";
-import AddWebsiteModal from "./AddWebsiteModal";
+import AddWebsiteModal from "@/app/dashboard/websites/AddWebsiteModal";
 
 function AddWebsiteSection() {
 	const [openAddWebsiteModal, setOpenAddWebsiteModal] = useState(false);

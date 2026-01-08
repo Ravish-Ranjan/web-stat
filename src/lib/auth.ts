@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import type { DefaultSession } from "next-auth";
 import bcryptjs from "bcryptjs";
-import Mailer from "./mailer";
+import Mailer from "@/lib/mailer";
 
 declare module "next-auth" {
 	interface Session {

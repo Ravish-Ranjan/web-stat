@@ -17,7 +17,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { deleteWebsite } from "./actions";
+import { deleteWebsite } from "@/app/dashboard/websites/actions";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";

@@ -6,7 +6,7 @@ import {
 } from "@/assets/paginationIcons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useState } from "react";
-import Button from "./ui/button";
+import Button from "@/components/ui/button";
 import { ChevronRightIcon } from "@/assets/dropdownIcons";
 
 function Pagination({ totalPage }: { totalPage: number }) {

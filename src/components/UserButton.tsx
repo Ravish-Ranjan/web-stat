@@ -1,17 +1,17 @@
 import { getServerSession } from "next-auth";
 import Button from "@/components/ui/button";
 import Image from "next/image";
-import { Small } from "./Typography";
+import { Small } from "@/components/Typography";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import SignOutButton from "./SignOutButton";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import SignOutButton from "@/components/SignOutButton";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DashboardIcon, ProfileIcon } from "@/assets/misc";
 import clsx from "clsx";
 import prisma from "@/lib/prisma";
