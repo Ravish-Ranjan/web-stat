@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { subDays, startOfDay, endOfDay } from "date-fns";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const CHUNK_SIZE = 100; // Process 100 websites at a time
 
@@ -78,7 +79,7 @@ export async function GET(request: Request) {
 		const deleted = await prisma.check.deleteMany({
 			where: { checkedAt: { lte: cutoff } },
 		});
-
+		revalidatePath("/dashboard");
 		return NextResponse.json({
 			success: true,
 			websitesSummarized: allStats.length,
