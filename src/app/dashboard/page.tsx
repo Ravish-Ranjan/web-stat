@@ -7,6 +7,7 @@ import { ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HalfRadialChart from "@/components/ui/half-radial-chart";
 import RadialMeterChart from "@/components/ui/radial-meter-chart";
+import { getValueColour } from "@/util/valueColour";
 
 async function page() {
 	const session = await getServerSession(authOptions);
@@ -45,7 +46,6 @@ async function page() {
     WHERE w."userId" = ${session?.user.id}
       AND ds.date >= NOW() - INTERVAL '7 days'
   `;
-
 	return (
 		<div className="grid p-4 gap-2">
 			<div className="outline-1 p-1 px-2 md:p-2 md:px-4 rounded-lg flex justify-between items-center bg-ws-accent-200 dark:bg-ws-base-600">
@@ -97,7 +97,7 @@ async function page() {
 									{
 										percentage: {
 											label: "Percentage",
-											color: "var(--chart-2)",
+											color: getValueColour(Number(summary.overall_uptime)),
 										},
 									} satisfies ChartConfig
 								}
@@ -110,10 +110,10 @@ async function page() {
 									},
 								]}
 								dataCount={
-									Number(summary.overall_uptime).toString() +
-									"%"
+									Number(summary.overall_uptime)
 								}
 								dataLabel="Overall Uptime"
+								dataSuffix="%"
 							/>
 						</div>
 						<div className="flex flex-col justify-center items-start">
@@ -121,7 +121,7 @@ async function page() {
 							<Large className="flex gap-1 items-center text-sm md:text-lg">
 								Overall Avg. Response Time :
 								<span className="px-0.5 text-gray-700 dark:text-gray-400">
-									{Number(summary.overall_response)}
+									{Number(summary.overall_response)} ms
 								</span>
 							</Large>
 							{/* total checks */}

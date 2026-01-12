@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const DB_BATCH_SIZE = 50;
 const PING_CONCURRENCY = 10;
@@ -122,7 +123,7 @@ export async function GET(request: Request) {
 				hasMore = false;
 			}
 		}
-
+		revalidatePath("/dashboard");
 		return NextResponse.json({ success: true, totalChecksCreated });
 	} catch (error) {
 		console.error("Paginated monitoring failed:", error);

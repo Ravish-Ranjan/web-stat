@@ -7,11 +7,15 @@ import {
 	RadialBarChart,
 } from "recharts";
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
+import clsx from "clsx";
+import { getValueClass } from "@/util/valueColour";
 
 interface RadialMeterChartProps {
 	chartConfig: ChartConfig;
 	chartData: Array<Record<string, string | number>>;
-	dataCount?: number | string;
+	dataCount?: number;
+	dataSuffix?: string;
+	labelColourType?:string
 	dataLabel?: string;
 }
 
@@ -19,6 +23,8 @@ function RadialMeterChart({
 	chartConfig,
 	chartData,
 	dataCount,
+	dataSuffix,
+	labelColourType = "fill",
 	dataLabel,
 }: RadialMeterChartProps) {
 	return (
@@ -36,7 +42,7 @@ function RadialMeterChart({
 					gridType="circle"
 					radialLines={false}
 					stroke="none"
-					className="first:fill-ws-base-400 last:fill-ws-base-700"
+					className="first:fill-ws-base-300 first:dark:fill-ws-base-400 last:fill-gray-100 last:dark:fill-ws-base-600"
 					polarRadius={[86, 74]}
 				/>
 				<RadialBar dataKey="percentage" background />
@@ -54,9 +60,9 @@ function RadialMeterChart({
 										<tspan
 											x={viewBox.cx}
 											y={viewBox.cy}
-											className="fill-foreground text-4xl font-bold"
+											className={clsx("text-4xl font-bold",getValueClass(dataCount || 0,labelColourType))}
 										>
-											{dataCount}
+											{dataCount}{dataSuffix}
 										</tspan>
 										<tspan
 											x={viewBox.cx}
