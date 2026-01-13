@@ -73,6 +73,7 @@ async function StatusTable({
 			isUp: true,
 			checkedAt: true,
 		},
+
 	});
 
 	const statusData: StatusType[] = websites.map((site) => {
@@ -94,7 +95,7 @@ async function StatusTable({
 			sparkline: siteChecks24.map((c) => ({
 				t: c.checkedAt,
 				v: c.isUp ? 1 : 0,
-			})),
+			})).splice(-5,5),
 		};
 	});
 

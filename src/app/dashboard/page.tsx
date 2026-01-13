@@ -161,10 +161,12 @@ async function page({ searchParams }: PageProps) {
 						<TableSkeleton
 							columns={[
 								"Name",
-								"Description",
 								"Url",
-								"Added On",
-								"Actions",
+								"Current Status",
+								"Sparkline",
+								"Last Checked At",
+								"Response Time (ms)",
+								"Uptime (%) 24h",
 							]}
 						/>
 					}

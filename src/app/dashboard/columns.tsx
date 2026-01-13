@@ -10,6 +10,7 @@ import { FormatedDateObj } from "../../components/BetterDates";
 import { precise } from "@/util/precisionNumber";
 import { ChartLineDots } from "@/components/ui/line-dot-chart";
 import { ChartConfig } from "@/components/ui/chart";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<StatusType>[] = [
 	{
@@ -22,8 +23,23 @@ export const columns: ColumnDef<StatusType>[] = [
 		},
 	},
 	{
+		accessorKey: "url",
+		header: () => <SortableHeader column="url" label="Url" />,
+		cell: ({ row }) => {
+			return (
+				<Link
+					href={row.getValue("url")}
+					target="_blank"
+					title={row.original.url}
+				>
+					<StyledUrl url={String(row.getValue("url"))} />
+				</Link>
+			);
+		},
+	},
+	{
 		accessorKey: "currentStatus",
-		header: "Current Status",
+		header: "Currently",
 		cell: ({ row }) => {
 			return (
 				<Badge
@@ -35,10 +51,38 @@ export const columns: ColumnDef<StatusType>[] = [
 			);
 		},
 	},
-
+	{
+		accessorKey: "sparkline",
+		header: "History",
+		cell: ({ row }) => {
+			const sparklineData = row.original.sparkline.map(
+				(point: SparkPoint) => ({
+					on: format(point.t,"PPpp"),
+					value: point.v ? 1 : 0,
+				})
+			);
+			return (
+				<ChartLineDots
+					chartConfig={
+						{
+							on: {
+								label: "On",
+								color: "var(--chart-3)",
+							},
+							value: {
+								label: "Is Up",
+								color: "var(--chart-1)",
+							},
+						} satisfies ChartConfig
+					}
+					chartData={sparklineData}
+				/>
+			);
+		},
+	},
 	{
 		accessorKey: "lastResponseTime",
-		header: "Last Response Time (ms)",
+		header: "Response Time",
 		cell: ({ row }) => {
 			if (row.getValue("lastResponseTime")) {
 				return (
@@ -58,7 +102,7 @@ export const columns: ColumnDef<StatusType>[] = [
 	},
 	{
 		accessorKey: "lastDayUptimePercentage",
-		header: "Last Day Uptime (%)",
+		header: "Uptime (%) 24h",
 		cell: ({ row }) => {
 			return (
 				<span
@@ -73,43 +117,10 @@ export const columns: ColumnDef<StatusType>[] = [
 		},
 	},
 	{
-		accessorKey: "sparkline",
-		header: "History",
-	},
-	{
 		accessorKey: "lastCheckedAt",
-		header: "Last Checked At",
+		header: "Last Checked",
 		cell: ({ row }) => {
 			return FormatedDateObj(row.getValue("lastCheckedAt"));
-		},
-	},
-	{
-		accessorKey: "sparkline",
-		header: "Sparkline",
-		cell: ({ row }) => {
-			const sparklineData = row.original.sparkline.map(
-				(point: SparkPoint) => ({
-					t: point.t.getTime(),
-					v: point.v ? 1 : 0,
-				})
-			);
-			return (
-				<ChartLineDots
-					chartConfig={
-						{
-							on: {
-								label: "On",
-								color: "var(--chart-1)",
-							},
-							value: {
-								label: "Is Up",
-								color: "var(--chart-2)",
-							},
-						} satisfies ChartConfig
-					}
-					chartData={sparklineData}
-				/>
-			);
 		},
 	},
 ];
