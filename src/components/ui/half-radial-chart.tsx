@@ -18,6 +18,7 @@ interface HalfRadialChartProps {
 	chartData: Array<Record<string, string | number>>;
 	dataCount?: number;
 	dataLabel?: string;
+	subChild?:string[]
 }
 
 function HalfRadialChart({
@@ -25,6 +26,7 @@ function HalfRadialChart({
 	chartData,
 	dataCount,
 	dataLabel,
+	subChild
 }: HalfRadialChartProps) {
 	return (
 		<ChartContainer
@@ -65,6 +67,16 @@ function HalfRadialChart({
 										>
 											{dataLabel}
 										</tspan>
+										{subChild?.map((val, i) => (
+											<tspan
+												key={i}
+												x={viewBox.cx}
+												y={(viewBox.cy || 0) + 48 + i * 20}
+												className="fill-foreground text-lg font-semibold"
+											>
+												{val}
+											</tspan>
+										))}
 									</text>
 								);
 							}

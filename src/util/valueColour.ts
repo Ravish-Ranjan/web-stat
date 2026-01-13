@@ -33,3 +33,13 @@ export function getValueColour(value: number) {
 	if (value < 20) return "var(--color-red-500)";
 	return "var(--color-gray-500)";
 }
+
+export function responseTimeToPercentage(ms: number): number {
+	const GOOD = 300;
+	const BAD = 2000;
+
+	if (ms <= GOOD) return 100;
+	if (ms >= BAD) return 0;
+
+	return Math.round(100 * (1 - (ms - GOOD) / (BAD - GOOD)));
+}

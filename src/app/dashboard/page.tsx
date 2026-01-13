@@ -8,9 +8,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HalfRadialChart from "@/components/ui/half-radial-chart";
 import RadialMeterChart from "@/components/ui/radial-meter-chart";
 import { getValueColour } from "@/util/valueColour";
+import StatusTable from "./StatusTable";
+import { SearchInput } from "@/components/SearchInput";
+import { Suspense } from "react";
+import { TableSkeleton } from "@/components/TableSkeleton";
+import Pagination from "@/components/Pagination";
 
-async function page() {
+interface PageProps {
+	searchParams: Promise<{
+		page?: string;
+		q?: string;
+		sortBy?: string;
+		sortOrder?: string;
+	}>;
+}
+
+async function page({ searchParams }: PageProps) {
 	const session = await getServerSession(authOptions);
+	const params = await searchParams;
 	const websites = await prisma.website.findMany({
 		where: { userId: session?.user.id },
 		select: {
@@ -79,6 +94,10 @@ async function page() {
 							chartData={[{ down: downCount, up: upCount }]}
 							dataCount={websites.length}
 							dataLabel="Total Websites"
+							subChild={[
+								`Up Sites : ${upCount}`,
+								`Down Sites : ${downCount}`,
+							]}
 						/>
 					</CardContent>
 				</Card>
@@ -97,7 +116,9 @@ async function page() {
 									{
 										percentage: {
 											label: "Percentage",
-											color: getValueColour(Number(summary.overall_uptime)),
+											color: getValueColour(
+												Number(summary.overall_uptime)
+											),
 										},
 									} satisfies ChartConfig
 								}
@@ -109,9 +130,7 @@ async function page() {
 										fill: "var(--color-percentage)",
 									},
 								]}
-								dataCount={
-									Number(summary.overall_uptime)
-								}
+								dataCount={Number(summary.overall_uptime)}
 								dataLabel="Overall Uptime"
 								dataSuffix="%"
 							/>
@@ -135,6 +154,25 @@ async function page() {
 					</CardContent>
 				</Card>
 			</main>
+			<div className="grid gap-2">
+				<SearchInput />
+				<Suspense
+					fallback={
+						<TableSkeleton
+							columns={[
+								"Name",
+								"Description",
+								"Url",
+								"Added On",
+								"Actions",
+							]}
+						/>
+					}
+				>
+					<StatusTable searchParams={params} />
+				</Suspense>
+				<Pagination totalPage={1} />
+			</div>
 		</div>
 	);
 }

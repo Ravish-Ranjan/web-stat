@@ -16,3 +16,20 @@ type WebsiteType = {
 	createdAt: Date;
 	id: string;
 };
+
+type SparkPoint = {
+  t: Date;
+  v: number;
+};
+
+type StatusType = {
+	name?: string;
+	url: string;
+	
+	currentStatus: boolean;
+	lastCheckedAt: Date;
+	lastResponseTime: number;
+	lastDayUptimePercentage: number
+
+	sparkline: SparkPoint[];
+};

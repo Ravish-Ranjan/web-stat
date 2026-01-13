@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
 	Label,
 	PolarGrid,
@@ -9,13 +9,14 @@ import {
 import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 import clsx from "clsx";
 import { getValueClass } from "@/util/valueColour";
+import { precise } from "@/util/precisionNumber";
 
 interface RadialMeterChartProps {
 	chartConfig: ChartConfig;
 	chartData: Array<Record<string, string | number>>;
 	dataCount?: number;
 	dataSuffix?: string;
-	labelColourType?:string
+	labelColourType?: string;
 	dataLabel?: string;
 }
 
@@ -34,7 +35,7 @@ function RadialMeterChart({
 		>
 			<RadialBarChart
 				data={chartData}
-				endAngle={360*Number(chartData[0].percentage)/100}
+				endAngle={(360 * Number(chartData[0].percentage)) / 100}
 				innerRadius={80}
 				outerRadius={140}
 			>
@@ -60,9 +61,16 @@ function RadialMeterChart({
 										<tspan
 											x={viewBox.cx}
 											y={viewBox.cy}
-											className={clsx("text-4xl font-bold",getValueClass(dataCount || 0,labelColourType))}
+											className={clsx(
+												"text-4xl font-bold",
+												getValueClass(
+													dataCount || 0,
+													labelColourType
+												)
+											)}
 										>
-											{dataCount}{dataSuffix}
+											{precise(dataCount || 0)}
+											{dataSuffix}
 										</tspan>
 										<tspan
 											x={viewBox.cx}

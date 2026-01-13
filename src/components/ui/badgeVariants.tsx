@@ -12,6 +12,8 @@ export default cva(
 					"border-transparent bg-ws-primary-500 dark:bg-ws-primary-600 text-primary-foreground [a&]:hover:bg-ws-primary-700/90 [a&]:dark:hover:bg-ws-primary-400/90",
 				secondary:
 					"border-transparent bg-ws-secondary-500 dark:bg-ws-secondary-600 text-primary-foreground [a&]:hover:bg-ws-secondary-700/90 [a&]:dark:hover:bg-ws-secondary-400/90",
+				success:
+					"border-transparent bg-green-500 dark:bg-green-600 text-primary-foreground [a&]:hover:bg-green-700/90 [a&]:dark:hover:bg-green-400/90",
 				destructive:
 					"border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
 				outline:
