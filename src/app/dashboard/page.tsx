@@ -7,12 +7,17 @@ import { ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HalfRadialChart from "@/components/ui/half-radial-chart";
 import RadialMeterChart from "@/components/ui/radial-meter-chart";
-import { getValueColour } from "@/util/valueColour";
+import {
+	getValueClass,
+	getValueColour,
+	responseTimeToPercentage,
+} from "@/util/valueColour";
 import StatusTable from "./StatusTable";
 import { SearchInput } from "@/components/SearchInput";
 import { Suspense } from "react";
 import { TableSkeleton } from "@/components/TableSkeleton";
 import Pagination from "@/components/Pagination";
+import clsx from "clsx";
 
 interface PageProps {
 	searchParams: Promise<{
@@ -139,7 +144,16 @@ async function page({ searchParams }: PageProps) {
 							{/* avg response time */}
 							<Large className="flex gap-1 items-center text-sm md:text-lg">
 								Overall Avg. Response Time :
-								<span className="px-0.5 text-gray-700 dark:text-gray-400">
+								<span
+									className={
+										(clsx("px-0.5"),
+										getValueClass(
+											responseTimeToPercentage(
+												Number(summary.overall_response)
+											)
+										))
+									}
+								>
 									{Number(summary.overall_response)} ms
 								</span>
 							</Large>
@@ -154,6 +168,7 @@ async function page({ searchParams }: PageProps) {
 					</CardContent>
 				</Card>
 			</main>
+			{/* status table */}
 			<div className="grid gap-2">
 				<SearchInput />
 				<Suspense

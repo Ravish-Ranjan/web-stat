@@ -39,7 +39,7 @@ export function SearchInput() {
 				params.delete("q");
 			}
 
-			router.push(`?${params.toString()}`);
+			router.push(`?${params.toString()}`,{scroll:false});
 		}, 1000);
 
 		return () => clearTimeout(delayDebounceFn);
@@ -48,7 +48,7 @@ export function SearchInput() {
 	const handleClear = () => setSearchText("");
 
 	const handleClearFilters = () => {
-		router.replace(pathName);
+		router.replace(pathName,{scroll:false});
 		handleClear();
 	};
 	return (

@@ -24,7 +24,7 @@ export default function SortableHeader({ column, label }: { column: string; labe
             params.set("sortOrder", "asc");
         }
 
-        router.push(`?${params.toString()}`);
+        router.push(`?${params.toString()}`,{scroll:false});
     };
     return (
         <Button

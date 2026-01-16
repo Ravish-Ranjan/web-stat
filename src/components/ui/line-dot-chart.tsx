@@ -25,7 +25,7 @@ interface ChartLineDotsProps {
 
 export function ChartLineDots({ chartConfig, chartData }: ChartLineDotsProps) {
 	return (
-		<ChartContainer config={chartConfig} className="h-18 w-70">
+		<ChartContainer config={chartConfig} className="h-18 w-75">
 			<LineChart
 				accessibilityLayer
 				data={chartData}
@@ -52,7 +52,7 @@ export function ChartLineDots({ chartConfig, chartData }: ChartLineDotsProps) {
 					tickMargin={5}
 					orientation="right"
 				/>
-				{/* <ChartTooltip
+				<ChartTooltip
 					
 					cursor={false}
 					content={
@@ -61,7 +61,7 @@ export function ChartLineDots({ chartConfig, chartData }: ChartLineDotsProps) {
 							formatter={(value) => (value === 0 ? "Down" : "Up")}
 						/>
 					}
-				/> */}
+				/>
 				<Line
 					dataKey="value"
 					type="natural"
