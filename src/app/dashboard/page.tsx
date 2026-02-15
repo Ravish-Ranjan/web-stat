@@ -18,6 +18,7 @@ import { Suspense } from "react";
 import { TableSkeleton } from "@/components/TableSkeleton";
 import Pagination from "@/components/Pagination";
 import clsx from "clsx";
+import RevalidateButton from "@/components/RevalidateButton";
 
 interface PageProps {
 	searchParams: Promise<{
@@ -70,7 +71,10 @@ async function page({ searchParams }: PageProps) {
 		<div className="grid p-4 gap-2">
 			<div className="outline-1 p-1 px-2 md:p-2 md:px-4 rounded-lg flex justify-between items-center bg-ws-accent-200 dark:bg-ws-base-600">
 				<H4>Websites</H4>
-				<AddWebsiteSection />
+				<div className="flex gap-2 items-center">
+					<AddWebsiteSection />
+					<RevalidateButton path="/dashboard"/>
+				</div>
 			</div>
 			{/* total sites */}
 			<main className="grid grid-cols-1 lg:grid-cols-3 gap-2">
@@ -88,7 +92,7 @@ async function page({ searchParams }: PageProps) {
 								{
 									up: {
 										label: "Up",
-										color: "var(--chart-2)",
+										color: "var(--color-green-500)",
 									},
 									down: {
 										label: "Down",
@@ -130,7 +134,7 @@ async function page({ searchParams }: PageProps) {
 								chartData={[
 									{
 										percentage: Number(
-											summary.overall_uptime
+											summary.overall_uptime,
 										),
 										fill: "var(--color-percentage)",
 									},
@@ -149,8 +153,10 @@ async function page({ searchParams }: PageProps) {
 										(clsx("px-0.5"),
 										getValueClass(
 											responseTimeToPercentage(
-												Number(summary.overall_response)
-											)
+												Number(
+													summary.overall_response,
+												),
+											),
 										))
 									}
 								>

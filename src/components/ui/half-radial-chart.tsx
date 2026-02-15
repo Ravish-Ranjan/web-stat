@@ -18,7 +18,7 @@ interface HalfRadialChartProps {
 	chartData: Array<Record<string, string | number>>;
 	dataCount?: number;
 	dataLabel?: string;
-	subChild?:string[]
+	subChild?: string[];
 }
 
 function HalfRadialChart({
@@ -26,7 +26,7 @@ function HalfRadialChart({
 	chartData,
 	dataCount,
 	dataLabel,
-	subChild
+	subChild,
 }: HalfRadialChartProps) {
 	return (
 		<ChartContainer
@@ -71,7 +71,11 @@ function HalfRadialChart({
 											<tspan
 												key={i}
 												x={viewBox.cx}
-												y={(viewBox.cy || 0) + 48 + i * 20}
+												y={
+													(viewBox.cy || 0) +
+													48 +
+													i * 20
+												}
 												className="fill-foreground text-lg font-semibold"
 											>
 												{val}
@@ -93,13 +97,15 @@ function HalfRadialChart({
 							fill={chartConfig[key].color}
 							className="stroke-transparent stroke-2"
 						>
-							<LabelList
-								position="insideStart"
-								className="fill-white dark:fill-black font-semibold capitalize mix-blend-luminosity"
-								fontSize={12}
-							>
-								{key}
-							</LabelList>
+							{(Number(chartData[0][key]) > 0) && (
+								<LabelList
+									position="insideStart"
+									className="fill-white dark:fill-black font-semibold capitalize mix-blend-luminosity"
+									fontSize={12}
+								>
+									{key}
+								</LabelList>
+							)}
 						</RadialBar>
 					);
 				})}

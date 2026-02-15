@@ -21,19 +21,31 @@ import {
 interface ChartLineDotsProps {
 	chartConfig: ChartConfig;
 	chartData: Array<Record<string, string | number>>;
+	margin?: {
+		top?: number;
+		bottom?: number;
+		left?: number;
+		right?: number;
+	};
 }
 
-export function ChartLineDots({ chartConfig, chartData }: ChartLineDotsProps) {
+export function ChartLineDots({
+	chartConfig,
+	chartData,
+	margin,
+}: ChartLineDotsProps) {
 	return (
 		<ChartContainer config={chartConfig} className="h-18 w-75">
 			<LineChart
 				accessibilityLayer
 				data={chartData}
-				margin={{
-					left: 6,
-					top: 10,
-					bottom: 0,
-				}}
+				margin={
+					margin || {
+						left: 6,
+						top: 10,
+						bottom: 0,
+					}
+				}
 			>
 				<CartesianGrid vertical={false} />
 				<XAxis
@@ -53,7 +65,6 @@ export function ChartLineDots({ chartConfig, chartData }: ChartLineDotsProps) {
 					orientation="right"
 				/>
 				<ChartTooltip
-					
 					cursor={false}
 					content={
 						<ChartTooltipContent
